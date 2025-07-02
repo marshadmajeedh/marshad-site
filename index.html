@@ -6,26 +6,26 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
   <style>
     :root {
-      --primary-color: #3498db;
-      --secondary-color: #2c3e50;
-      --accent-color: #e74c3c;
-      --light-color: #ecf0f1;
-      --dark-color: #2c3e50;
-      --gradient-1: linear-gradient(135deg, #3498db, #9b59b6);
-      --gradient-2: linear-gradient(135deg, #e74c3c, #f39c12);
-      --gradient-3: linear-gradient(135deg, #2ecc71, #3498db);
-      --gradient-4: linear-gradient(135deg, #f1c40f, #e67e22);
+      --primary-color: #333333;
+      --secondary-color: #1a1a1a;
+      --accent-color: #b0b0b0;
+      --light-color: #f5f5f5;
+      --dark-color: #1a1a1a;
+      --gradient-1: linear-gradient(135deg, #2b2b2b, #555555, #888888);
+      --gradient-2: linear-gradient(135deg, #4a4a4a, #6a6a6a, #9a9a9a);
+      --gradient-3: linear-gradient(135deg, #333333, #5a5a5a, #7f7f7f);
+      --gradient-4: linear-gradient(135deg, #666666, #888888, #aaaaaa);
     }
     
     body {
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      background-color: #f8f9fa;
+      background: linear-gradient(180deg, #f8f8f8 0%, #e0e0e0 100%);
       color: var(--dark-color);
-      transition: all 0.3s ease;
+      transition: all 0.5s ease;
       overflow-x: hidden;
+      position: relative;
     }
     
-    /* Floating particles background */
     .particles {
       position: fixed;
       top: 0;
@@ -34,36 +34,51 @@
       height: 100%;
       z-index: -1;
       pointer-events: none;
+      overflow: hidden;
     }
     
     .particle {
       position: absolute;
       border-radius: 50%;
-      background: rgba(52, 152, 219, 0.5);
-      animation: float linear infinite;
+      background: radial-gradient(circle, rgba(51, 51, 51, 0.6), rgba(51, 51, 51, 0));
+      animation: float 20s linear infinite, subtlePulse 4s ease-in-out infinite;
+      box-shadow: 0 0 15px rgba(51, 51, 51, 0.3);
     }
     
     @keyframes float {
       0% {
-        transform: translateY(0) rotate(0deg);
-        opacity: 1;
+        transform: translateY(0) scale(1);
+        opacity: 0.7;
+      }
+      50% {
+        opacity: 0.3;
       }
       100% {
-        transform: translateY(-100vh) rotate(360deg);
+        transform: translateY(-150vh) scale(0.9);
         opacity: 0;
       }
+    }
+    
+    @keyframes subtlePulse {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.1); }
     }
     
     .profile-header {
       background: var(--gradient-1);
       color: white;
       border-radius: 15px;
-      padding: 2rem;
-      margin-bottom: 2rem;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.2);
-      animation: fadeIn 1s ease-in-out, shadowPulse 8s infinite alternate;
+      padding: 3rem;
+      margin-bottom: 3rem;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+      animation: fadeIn 1.5s ease-out;
       position: relative;
       overflow: hidden;
+      transition: transform 0.5s ease;
+    }
+    
+    .profile-header:hover {
+      transform: translateY(-5px);
     }
     
     .profile-header::before {
@@ -74,7 +89,7 @@
       width: 200%;
       height: 200%;
       background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0) 70%);
-      animation: rotate 20s linear infinite;
+      animation: rotate 30s linear infinite;
       z-index: 0;
     }
     
@@ -88,67 +103,63 @@
       to { transform: rotate(360deg); }
     }
     
-    @keyframes shadowPulse {
-      0% { box-shadow: 0 10px 30px rgba(52, 152, 219, 0.4); }
-      50% { box-shadow: 0 10px 40px rgba(155, 89, 182, 0.4); }
-      100% { box-shadow: 0 10px 30px rgba(46, 204, 113, 0.4); }
-    }
-    
     .profile-img {
-      width: 150px;
-      height: 150px;
+      width: 160px;
+      height: 160px;
       object-fit: cover;
-      border: 5px solid white;
+      border: 6px solid #ffffff;
       border-radius: 50%;
-      box-shadow: 0 10px 25px rgba(0,0,0,0.3);
-      transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-      animation: floating 3s ease-in-out infinite, borderGlow 4s infinite alternate;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+      transition: all 0.7s cubic-bezier(0.165, 0.84, 0.44, 1);
+      animation: subtleFloat 5s ease-in-out infinite;
+      filter: grayscale(100%);
     }
     
-    @keyframes borderGlow {
-      0% { border-color: white; }
-      50% { border-color: #f1c40f; }
-      100% { border-color: white; }
+    @keyframes subtleFloat {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-10px); }
     }
     
     .profile-img:hover {
-      transform: scale(1.1) rotate(5deg);
-      box-shadow: 0 15px 35px rgba(0,0,0,0.4);
+      transform: scale(1.1);
+      box-shadow: 0 15px 35px rgba(0,0,0,0.6);
+      filter: grayscale(50%);
     }
     
     h1 {
-      font-weight: 700;
-      margin-bottom: 0.5rem;
+      font-weight: 800;
+      margin-bottom: 0.8rem;
       color: white;
-      text-shadow: 0 2px 5px rgba(0,0,0,0.2);
-      animation: textGlow 3s infinite alternate;
+      text-shadow: 0 2px 5px rgba(0,0,0,0.5);
+      animation: fadeIn 1.5s ease-out;
+      transition: all 0.5s ease;
     }
     
-    @keyframes textGlow {
-      from { text-shadow: 0 0 5px rgba(255,255,255,0.5); }
-      to { text-shadow: 0 0 15px rgba(255,255,255,0.8); }
+    h1:hover {
+      text-shadow: 0 3px 10px rgba(0,0,0,0.7);
     }
     
     h2 {
       color: var(--primary-color);
-      border-bottom: 2px solid var(--primary-color);
-      padding-bottom: 0.5rem;
-      margin-top: 1.5rem;
+      border-bottom: 3px solid var(--primary-color);
+      padding-bottom: 0.8rem;
+      margin-top: 2.5rem;
       position: relative;
       overflow: hidden;
+      transition: color 0.5s ease;
     }
     
     h2::after {
       content: '';
       position: absolute;
-      bottom: -2px;
+      bottom: -3px;
       left: 0;
       width: 100%;
-      height: 2px;
+      height: 3px;
       background: var(--gradient-2);
       transform: scaleX(0);
       transform-origin: left;
-      transition: transform 0.5s ease;
+      transition: transform 0.7s ease;
     }
     
     .card:hover h2::after {
@@ -157,11 +168,11 @@
     
     .card {
       border: none;
-      border-radius: 10px;
-      box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-      transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-      margin-bottom: 1.5rem;
-      background: white;
+      border-radius: 15px;
+      box-shadow: 0 8px 25px rgba(0,0,0,0.25);
+      transition: all 0.7s cubic-bezier(0.165, 0.84, 0.44, 1);
+      margin-bottom: 2.5rem;
+      background: linear-gradient(145deg, #ffffff, #f2f2f2);
       overflow: hidden;
       position: relative;
     }
@@ -172,16 +183,16 @@
       top: 0;
       left: 0;
       width: 100%;
-      height: 5px;
-      background: var(--gradient-1);
+      height: 6px;
+      background: var(--gradient-3);
       transform: scaleX(0);
       transform-origin: left;
-      transition: transform 0.5s ease;
+      transition: transform 0.7s ease;
     }
     
     .card:hover {
       transform: translateY(-10px);
-      box-shadow: 0 15px 30px rgba(0,0,0,0.2);
+      box-shadow: 0 15px 35px rgba(0,0,0,0.35);
     }
     
     .card:hover::before {
@@ -190,31 +201,32 @@
     
     .contact-info i {
       color: var(--primary-color);
-      margin-right: 10px;
-      width: 20px;
+      margin-right: 12px;
+      width: 25px;
       text-align: center;
-      transition: all 0.3s ease;
+      transition: all 0.5s ease;
     }
     
     .contact-info p:hover i {
-      transform: scale(1.2);
+      transform: translateX(5px);
       color: var(--accent-color);
     }
     
     .social-links a {
       color: var(--dark-color);
       text-decoration: none;
-      transition: all 0.3s ease;
+      transition: all 0.5s ease;
       display: inline-block;
+      position: relative;
     }
     
     .social-links a:hover {
-      color: var(--primary-color);
+      color: var(--accent-color);
       transform: translateX(5px);
     }
     
     .social-links i {
-      transition: all 0.3s ease;
+      transition: all 0.5s ease;
     }
     
     .social-links a:hover i {
@@ -224,12 +236,12 @@
     .skill-badge {
       background: var(--gradient-3);
       color: white;
-      padding: 8px 20px;
-      border-radius: 20px;
+      padding: 10px 25px;
+      border-radius: 25px;
       display: inline-block;
-      margin: 5px;
-      transition: all 0.3s ease;
-      box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+      margin: 8px;
+      transition: all 0.5s ease;
+      box-shadow: 0 5px 12px rgba(0,0,0,0.25);
       position: relative;
       overflow: hidden;
     }
@@ -241,63 +253,63 @@
       left: 0;
       width: 100%;
       height: 100%;
-      background: linear-gradient(rgba(255,255,255,0.3), rgba(255,255,255,0));
-      transform: translateY(-100%);
-      transition: transform 0.3s ease;
+      background: linear-gradient(45deg, rgba(255,255,255,0.3), rgba(255,255,255,0));
+      transform: translateX(-100%);
+      transition: transform 0.5s ease;
     }
     
     .skill-badge:hover {
       transform: translateY(-3px);
-      box-shadow: 0 7px 14px rgba(0,0,0,0.2);
+      box-shadow: 0 8px 20px rgba(0,0,0,0.35);
     }
     
     .skill-badge:hover::before {
-      transform: translateY(0);
+      transform: translateX(0);
     }
     
     .soft-skill-item {
       display: flex;
       align-items: center;
-      margin-bottom: 15px;
-      padding: 15px;
-      background-color: rgba(255, 255, 255, 0.9);
-      border-radius: 8px;
-      transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-      box-shadow: 0 3px 10px rgba(0,0,0,0.05);
-      border-left: 4px solid transparent;
+      margin-bottom: 20px;
+      padding: 20px;
+      background: linear-gradient(145deg, #ffffff, #f2f2f2);
+      border-radius: 10px;
+      transition: all 0.7s cubic-bezier(0.165, 0.84, 0.44, 1);
+      box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+      border-left: 5px solid transparent;
     }
     
     .soft-skill-item:hover {
       transform: translateX(10px);
-      box-shadow: 0 10px 20px rgba(0,0,0,0.1);
-      border-left: 4px solid var(--accent-color);
+      box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+      border-left: 5px solid var(--accent-color);
     }
     
     .soft-skill-icon {
-      width: 50px;
-      height: 50px;
+      width: 60px;
+      height: 60px;
       display: flex;
       align-items: center;
       justify-content: center;
       background: var(--gradient-4);
       color: white;
       border-radius: 50%;
-      margin-right: 15px;
+      margin-right: 20px;
       flex-shrink: 0;
-      transition: all 0.3s ease;
-      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+      transition: all 0.5s ease;
+      box-shadow: 0 5px 12px rgba(0,0,0,0.25);
     }
     
     .soft-skill-item:hover .soft-skill-icon {
-      transform: rotate(15deg) scale(1.1);
-      box-shadow: 0 6px 12px rgba(0,0,0,0.15);
+      transform: scale(1.1);
+      box-shadow: 0 8px 16px rgba(0,0,0,0.3);
     }
     
     .soft-skill-name {
-      font-weight: 600;
-      margin-bottom: 5px;
+      font-weight: 700;
+      margin-bottom: 8px;
       color: var(--dark-color);
-      transition: all 0.3s ease;
+      transition: all 0.5s ease;
     }
     
     .soft-skill-item:hover .soft-skill-name {
@@ -305,16 +317,15 @@
     }
     
     .soft-skill-desc {
-      font-size: 0.9rem;
-      color: #666;
-      transition: all 0.3s ease;
+      font-size: 0.95rem;
+      color: #555555;
+      transition: all 0.5s ease;
     }
     
     .soft-skill-item:hover .soft-skill-desc {
-      color: #444;
+      color: #333333;
     }
     
-    /* Animated underline for links */
     .animated-underline {
       position: relative;
       display: inline-block;
@@ -326,19 +337,18 @@
       bottom: -2px;
       left: 0;
       width: 0;
-      height: 2px;
-      background: var(--accent-color);
-      transition: width 0.3s ease;
+      height: 3px;
+      background: var(--gradient-2);
+      transition: width 0.5s ease;
     }
     
     .animated-underline:hover::after {
       width: 100%;
     }
     
-    /* Keyframe animations */
     @keyframes fadeIn {
-      from { opacity: 0; }
-      to { opacity: 1; }
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
     }
     
     @keyframes slideInLeft {
@@ -374,23 +384,10 @@
       }
     }
     
-    @keyframes floating {
-      0% { transform: translateY(0px); }
-      50% { transform: translateY(-15px); }
-      100% { transform: translateY(0px); }
-    }
-    
-    @keyframes pulse {
-      0% { transform: scale(1); }
-      50% { transform: scale(1.05); }
-      100% { transform: scale(1); }
-    }
-    
-    /* Section animations */
     .animate-on-scroll {
       opacity: 0;
       transform: translateY(30px);
-      transition: all 0.6s ease;
+      transition: all 0.9s cubic-bezier(0.165, 0.84, 0.44, 1);
     }
     
     .animate-on-scroll.visible {
@@ -398,48 +395,69 @@
       transform: translateY(0);
     }
     
-    /* Progress bars for skills */
     .skill-progress {
-      height: 10px;
-      border-radius: 5px;
-      background: #eee;
-      margin-bottom: 15px;
+      height: 12px;
+      border-radius: 6px;
+      background: #e0e0e0;
+      margin-bottom: 20px;
       overflow: hidden;
+      position: relative;
+      box-shadow: inset 0 2px 5px rgba(0,0,0,0.2);
     }
     
     .skill-progress-bar {
       height: 100%;
-      border-radius: 5px;
+      border-radius: 6px;
       background: var(--gradient-3);
       width: 0;
-      transition: width 1.5s ease, opacity 0.5s ease;
+      transition: width 2s cubic-bezier(0.165, 0.84, 0.44, 1), opacity 0.7s ease;
       opacity: 0;
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .skill-progress-bar::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(45deg, rgba(255,255,255,0.3), rgba(255,255,255,0));
+      animation: shimmer 2.5s infinite;
+    }
+    
+    @keyframes shimmer {
+      0% { transform: translateX(-100%); }
+      100% { transform: translateX(100%); }
     }
     
     .skill-progress.visible .skill-progress-bar {
       opacity: 1;
     }
     
-    /* Responsive adjustments */
     @media (max-width: 768px) {
       .profile-img {
-        width: 120px;
-        height: 120px;
+        width: 130px;
+        height: 130px;
       }
       
       .profile-header {
-        padding: 1.5rem;
+        padding: 2rem;
+      }
+      
+      .soft-skill-icon {
+        width: 50px;
+        height: 50px;
       }
     }
   </style>
 </head>
 <body class="container mt-5 mb-5">
-  <!-- Floating particles background -->
   <div class="particles" id="particles"></div>
   
   <div class="row">
     <div class="col-lg-8 mx-auto">
-      <!-- Profile Header -->
       <div class="profile-header text-center animate-on-scroll">
         <div class="mb-4">
           <img src="marshad.jpg" alt="Marshad Ahamed" class="profile-img">
@@ -449,7 +467,6 @@
         <p class="lead">Outside of tech, I enjoy playing football, love a good cup of coffee, and constantly look for opportunities to challenge myself and grow. I'm still early in my journey, but I'm excited to keep learning, building, and exploring new areas in tech.</p>
       </div>
       
-      <!-- Technical Skills Section -->
       <div class="card p-4 animate-on-scroll">
         <h2>Technical Skills</h2>
         <div class="skills-container mt-3">
@@ -473,14 +490,12 @@
             <div class="skill-progress-bar" style="width: 10%;"></div>
           </div>
           <p>Cybersecurity Concepts</p>
-	  <div class="skill-progress">
+          <div class="skill-progress">
             <div class="skill-progress-bar" style="width: 20%;"></div>
           </div>
-
         </div>
       </div>
       
-      <!-- Soft Skills Section -->
       <div class="card p-4 animate-on-scroll">
         <h2>Soft Skills</h2>
         <div class="soft-skills-container mt-3">
@@ -526,7 +541,6 @@
         </div>
       </div>
       
-      <!-- Projects Section -->
       <div class="card p-4 animate-on-scroll">
         <h2>Projects</h2>
         <div class="project-item mb-4">
@@ -545,17 +559,15 @@
         </div>
       </div>
       
-      <!-- Contact Section -->
       <div class="card p-4 animate-on-scroll">
         <h2>Contact</h2>
         <div class="contact-info mt-3">
           <p><i class="fas fa-envelope"></i> marshadahamedh@gmail.com</p>
           <p><i class="fas fa-phone"></i> +94 0766756648</p>
-          <p><i class="fas fa-map-marker-alt"></i> Weligama, Sri Lanka</p>
+          <p><i class="fas fa-map-marker-alt"></i> Colombo, Sri Lanka</p>
         </div>
       </div>
       
-      <!-- Links Section -->
       <div class="card p-4 animate-on-scroll">
         <h2>Links</h2>
         <ul class="list-unstyled social-links mt-3">
@@ -568,22 +580,21 @@
 
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
   <script>
-    // Create floating particles
     function createParticles() {
       const particlesContainer = document.getElementById('particles');
-      const particleCount = 30;
+      const particleCount = 40;
       
       for (let i = 0; i < particleCount; i++) {
         const particle = document.createElement('div');
         particle.classList.add('particle');
         
-        // Random properties
         const size = Math.random() * 10 + 5;
         const posX = Math.random() * 100;
         const duration = Math.random() * 20 + 10;
-        const delay = Math.random() * 10;
-        const opacity = Math.random() * 0.5 + 0.1;
-        const color = `rgba(${Math.floor(Math.random() * 56 + 200)}, ${Math.floor(Math.random() * 56 + 200)}, ${Math.floor(Math.random() * 56 + 200)}, ${opacity})`;
+        const delay = Math.random() * 5;
+        const opacity = Math.random() * 0.5 + 0.2;
+        const gray = Math.floor(Math.random() * 80 + 120);
+        const color = `rgba(${gray}, ${gray}, ${gray}, ${opacity})`;
         
         particle.style.width = `${size}px`;
         particle.style.height = `${size}px`;
@@ -591,44 +602,74 @@
         particle.style.background = color;
         particle.style.animationDuration = `${duration}s`;
         particle.style.animationDelay = `${delay}s`;
+        particle.style.boxShadow = `0 0 ${size * 1.5}px ${color}`;
         
         particlesContainer.appendChild(particle);
       }
     }
     
-    // Scroll animation
     function animateOnScroll() {
       const elements = document.querySelectorAll('.animate-on-scroll');
       
-      elements.forEach(element => {
+      elements.forEach((element, index) => {
         const elementPosition = element.getBoundingClientRect().top;
         const windowHeight = window.innerHeight;
         
         if (elementPosition < windowHeight - 100) {
-          element.classList.add('visible');
+          setTimeout(() => {
+            element.classList.add('visible');
+            element.style.transitionDelay = `${index * 0.15}s`;
+          }, 50);
         }
       });
     }
     
-    // Animate progress bars when visible
     function animateProgressBars() {
       const progressBars = document.querySelectorAll('.skill-progress');
       
-      progressBars.forEach(bar => {
+      progressBars.forEach((bar, index) => {
         const barPosition = bar.getBoundingClientRect().top;
         const windowHeight = window.innerHeight;
         
         if (barPosition < windowHeight - 100) {
-          bar.classList.add('visible');
+          setTimeout(() => {
+            bar.classList.add('visible');
+          }, index * 300);
         }
       });
     }
     
-    // Initialize
+    function animateBackground() {
+      const cards = document.querySelectorAll('.card');
+      cards.forEach(card => {
+        card.addEventListener('mousemove', (e) => {
+          const rect = card.getBoundingClientRect();
+          const x = e.clientX - rect.left;
+          const y = e.clientY - rect.top;
+          card.style.background = `radial-gradient(circle at ${x}px ${y}px, #ffffff, #f2f2f2)`;
+        });
+        card.addEventListener('mouseleave', () => {
+          card.style.background = `linear-gradient(145deg, #ffffff, #f2f2f2)`;
+        });
+      });
+    }
+    
     document.addEventListener('DOMContentLoaded', () => {
       createParticles();
       animateOnScroll();
       animateProgressBars();
+      animateBackground();
+      
+      document.body.style.background = `linear-gradient(180deg, #f8f8f8 0%, #e0e0e0 100%)`;
+      document.body.animate([
+        { backgroundPosition: '0% 0%' },
+        { backgroundPosition: '100% 100%' }
+      ], {
+        duration: 30000,
+        iterations: Infinity,
+        direction: 'alternate',
+        easing: 'ease-in-out'
+      });
     });
     
     window.addEventListener('scroll', () => {
