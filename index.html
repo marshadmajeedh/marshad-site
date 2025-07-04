@@ -1,29 +1,36 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Marshad Ahamed - Portfolio</title>
+  <title>Marshad Ahamed - 3D Portfolio</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
   <style>
     :root {
-      --primary-color: #333333;
-      --secondary-color: #1a1a1a;
-      --accent-color: #b0b0b0;
-      --light-color: #f5f5f5;
-      --dark-color: #1a1a1a;
-      --gradient-1: linear-gradient(135deg, #2b2b2b, #555555, #888888);
-      --gradient-2: linear-gradient(135deg, #4a4a4a, #6a6a6a, #9a9a9a);
-      --gradient-3: linear-gradient(135deg, #333333, #5a5a5a, #7f7f7f);
-      --gradient-4: linear-gradient(135deg, #666666, #888888, #aaaaaa);
+      --primary-color: #1e3a8a;
+      --secondary-color: #3b82f6;
+      --accent-color: #10b981;
+      --light-color: #f0f9ff;
+      --dark-color: #0f172a;
+      --gradient-1: linear-gradient(135deg, #1e3a8a, #3b82f6, #60a5fa);
+      --gradient-2: linear-gradient(135deg, #10b981, #34d399, #6ee7b7);
+      --gradient-3: linear-gradient(135deg, #1e40af, #3b82f6, #93c5fd);
+      --gradient-4: linear-gradient(135deg, #059669, #10b981, #34d399);
     }
     
     body {
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      background: linear-gradient(180deg, #f8f8f8 0%, #e0e0e0 100%);
+      font-family: 'Poppins', sans-serif;
+      background: var(--gradient-1);
       color: var(--dark-color);
       transition: all 0.5s ease;
       overflow-x: hidden;
       position: relative;
+      perspective: 1200px;
+      min-height: 100vh;
+      transform-style: preserve-3d;
+    }
+    
+    .container {
+      transform-style: preserve-3d;
     }
     
     .particles {
@@ -35,50 +42,58 @@
       z-index: -1;
       pointer-events: none;
       overflow: hidden;
+      perspective: 2000px;
+      transform-style: preserve-3d;
     }
     
     .particle {
       position: absolute;
       border-radius: 50%;
-      background: radial-gradient(circle, rgba(51, 51, 51, 0.6), rgba(51, 51, 51, 0));
-      animation: float 20s linear infinite, subtlePulse 4s ease-in-out infinite;
-      box-shadow: 0 0 15px rgba(51, 51, 51, 0.3);
+      background: radial-gradient(circle, rgba(59, 130, 246, 0.7), rgba(59, 130, 246, 0));
+      animation: float 12s linear infinite, subtlePulse 2.5s ease-in-out infinite;
+      box-shadow: 0 0 25px rgba(59, 130, 246, 0.5);
+      transform: translateZ(0);
+      transform-style: preserve-3d;
     }
     
     @keyframes float {
       0% {
-        transform: translateY(0) scale(1);
-        opacity: 0.7;
+        transform: translateY(0) translateZ(0) scale(1) rotateX(0deg);
+        opacity: 0.9;
       }
       50% {
-        opacity: 0.3;
+        opacity: 0.5;
+        transform: translateY(-75vh) translateZ(250px) scale(0.9) rotateX(180deg);
       }
       100% {
-        transform: translateY(-150vh) scale(0.9);
+        transform: translateY(-150vh) translateZ(100px) scale(0.7) rotateX(360deg);
         opacity: 0;
       }
     }
     
     @keyframes subtlePulse {
-      0%, 100% { transform: scale(1); }
-      50% { transform: scale(1.1); }
+      0%, 100% { transform: scale(1) translateZ(0); }
+      50% { transform: scale(1.2) translateZ(50px); }
     }
     
     .profile-header {
-      background: var(--gradient-1);
+      background: var(--gradient-3);
       color: white;
-      border-radius: 15px;
-      padding: 3rem;
-      margin-bottom: 3rem;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+      border-radius: 25px;
+      padding: 4rem;
+      margin-bottom: 3.5rem;
+      box-shadow: 0 30px 60px rgba(0,0,0,0.6);
       animation: fadeIn 1.5s ease-out;
       position: relative;
       overflow: hidden;
-      transition: transform 0.5s ease;
+      transform-style: preserve-3d;
+      transition: transform 0.7s ease;
+      transform: translateZ(30px);
     }
     
     .profile-header:hover {
-      transform: translateY(-5px);
+      transform: translateY(-20px) rotateX(10deg) rotateY(10deg) translateZ(80px);
+      box-shadow: 0 40px 80px rgba(0,0,0,0.7);
     }
     
     .profile-header::before {
@@ -88,9 +103,10 @@
       left: -50%;
       width: 200%;
       height: 200%;
-      background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0) 70%);
-      animation: rotate 30s linear infinite;
+      background: radial-gradient(circle, rgba(255,255,255,0.2) 0%, rgba(255,255,255,0) 70%);
+      animation: rotate 20s linear infinite;
       z-index: 0;
+      transform: translateZ(-20px);
     }
     
     .profile-header > * {
@@ -99,67 +115,75 @@
     }
     
     @keyframes rotate {
-      from { transform: rotate(0deg); }
-      to { transform: rotate(360deg); }
+      from { transform: rotate(0deg) translateZ(-50px); }
+      to { transform: rotate(360deg) translateZ(50px); }
     }
     
     .profile-img {
-      width: 160px;
-      height: 160px;
+      width: 200px;
+      height: 200px;
       object-fit: cover;
-      border: 6px solid #ffffff;
+      border: 10px solid #ffffff;
       border-radius: 50%;
-      box-shadow: 0 10px 25px rgba(0,0,0,0.5);
-      transition: all 0.7s cubic-bezier(0.165, 0.84, 0.44, 1);
-      animation: subtleFloat 5s ease-in-out infinite;
-      filter: grayscale(100%);
+      box-shadow: 0 25px 50px rgba(0,0,0,0.7);
+      transition: all 0.9s cubic-bezier(0.25, 0.8, 0.25, 1);
+      animation: subtleFloat 3.5s ease-in-out infinite;
+      transform-style: preserve-3d;
+      filter: grayscale(10%);
+      transform: translateZ(40px);
     }
     
     @keyframes subtleFloat {
-      0%, 100% { transform: translateY(0); }
-      50% { transform: translateY(-10px); }
+      0%, 100% { transform: translateY(0) translateZ(40px) rotateX(0deg); }
+      50% { transform: translateY(-20px) translateZ(80px) rotateX(10deg); }
     }
     
     .profile-img:hover {
-      transform: scale(1.1);
-      box-shadow: 0 15px 35px rgba(0,0,0,0.6);
-      filter: grayscale(50%);
+      transform: scale(1.2) translateZ(100px) rotateY(20deg);
+      box-shadow: 0 35px 70px rgba(0,0,0,0.8);
+      filter: grayscale(0%);
     }
     
     h1 {
-      font-weight: 800;
-      margin-bottom: 0.8rem;
+      font-weight: 900;
+      margin-bottom: 1.2rem;
       color: white;
-      text-shadow: 0 2px 5px rgba(0,0,0,0.5);
+      text-shadow: 0 4px 15px rgba(0,0,0,0.7);
       animation: fadeIn 1.5s ease-out;
-      transition: all 0.5s ease;
+      transition: all 0.7s ease;
+      transform-style: preserve-3d;
+      transform: translateZ(30px);
     }
     
     h1:hover {
-      text-shadow: 0 3px 10px rgba(0,0,0,0.7);
+      text-shadow: 0 8px 20px rgba(0,0,0,0.9);
+      transform: translateZ(50px);
     }
     
     h2 {
       color: var(--primary-color);
-      border-bottom: 3px solid var(--primary-color);
-      padding-bottom: 0.8rem;
-      margin-top: 2.5rem;
+      border-bottom: 5px solid var(--secondary-color);
+      padding-bottom: 1.2rem;
+      margin-top: 3.5rem;
       position: relative;
       overflow: hidden;
-      transition: color 0.5s ease;
+      transition: color 0.6s ease;
+      transform-style: preserve-3d;
+      transform: translateZ(20px);
     }
     
     h2::after {
       content: '';
       position: absolute;
-      bottom: -3px;
+      bottom: -5px;
       left: 0;
       width: 100%;
-      height: 3px;
+      height: 5px;
       background: var(--gradient-2);
       transform: scaleX(0);
       transform-origin: left;
       transition: transform 0.7s ease;
+      transform: translateZ(10px);
     }
     
     .card:hover h2::after {
@@ -168,13 +192,15 @@
     
     .card {
       border: none;
-      border-radius: 15px;
-      box-shadow: 0 8px 25px rgba(0,0,0,0.25);
-      transition: all 0.7s cubic-bezier(0.165, 0.84, 0.44, 1);
-      margin-bottom: 2.5rem;
-      background: linear-gradient(145deg, #ffffff, #f2f2f2);
+      border-radius: 25px;
+      box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+      transition: all 0.9s cubic-bezier(0.25, 0.8, 0.25, 1);
+      margin-bottom: 3.5rem;
+      background: linear-gradient(145deg, #ffffff, #e0f2fe);
       overflow: hidden;
       position: relative;
+      transform-style: preserve-3d;
+      transform: translateZ(20px);
     }
     
     .card::before {
@@ -183,16 +209,17 @@
       top: 0;
       left: 0;
       width: 100%;
-      height: 6px;
-      background: var(--gradient-3);
+      height: 10px;
+      background: var(--gradient-4);
       transform: scaleX(0);
       transform-origin: left;
       transition: transform 0.7s ease;
+      transform: translateZ(10px);
     }
     
     .card:hover {
-      transform: translateY(-10px);
-      box-shadow: 0 15px 35px rgba(0,0,0,0.35);
+      transform: translateY(-25px) rotateX(15deg) rotateY(15deg) translateZ(70px);
+      box-shadow: 0 35px 70px rgba(0,0,0,0.6);
     }
     
     .card:hover::before {
@@ -200,50 +227,57 @@
     }
     
     .contact-info i {
-      color: var(--primary-color);
-      margin-right: 12px;
-      width: 25px;
+      color: var(--secondary-color);
+      margin-right: 15px;
+      width: 30px;
       text-align: center;
-      transition: all 0.5s ease;
+      transition: all 0.6s ease;
+      transform-style: preserve-3d;
+      transform: translateZ(10px);
     }
     
     .contact-info p:hover i {
-      transform: translateX(5px);
+      transform: translateX(10px) translateZ(40px) rotateY(20deg);
       color: var(--accent-color);
     }
     
     .social-links a {
       color: var(--dark-color);
       text-decoration: none;
-      transition: all 0.5s ease;
+      transition: all 0.6s ease;
       display: inline-block;
       position: relative;
+      transform-style: preserve-3d;
+      transform: translateZ(10px);
     }
     
     .social-links a:hover {
       color: var(--accent-color);
-      transform: translateX(5px);
+      transform: translateX(15px) translateZ(30px) rotateY(15deg);
     }
     
     .social-links i {
-      transition: all 0.5s ease;
+      transition: all 0.6s ease;
+      transform: translateZ(5px);
     }
     
     .social-links a:hover i {
-      transform: scale(1.2);
+      transform: scale(1.5) translateZ(30px);
     }
     
     .skill-badge {
-      background: var(--gradient-3);
+      background: var(--gradient-4);
       color: white;
-      padding: 10px 25px;
-      border-radius: 25px;
+      padding: 14px 35px;
+      border-radius: 35px;
       display: inline-block;
-      margin: 8px;
-      transition: all 0.5s ease;
-      box-shadow: 0 5px 12px rgba(0,0,0,0.25);
+      margin: 12px;
+      transition: all 0.7s ease;
+      box-shadow: 0 12px 25px rgba(0,0,0,0.5);
       position: relative;
       overflow: hidden;
+      transform-style: preserve-3d;
+      transform: translateZ(15px);
     }
     
     .skill-badge::before {
@@ -253,14 +287,15 @@
       left: 0;
       width: 100%;
       height: 100%;
-      background: linear-gradient(45deg, rgba(255,255,255,0.3), rgba(255,255,255,0));
+      background: linear-gradient(45deg, rgba(255,255,255,0.5), rgba(255,255,255,0));
       transform: translateX(-100%);
-      transition: transform 0.5s ease;
+      transition: transform 0.6s ease;
+      transform: translateZ(10px);
     }
     
     .skill-badge:hover {
-      transform: translateY(-3px);
-      box-shadow: 0 8px 20px rgba(0,0,0,0.35);
+      transform: translateY(-10px) translateZ(40px) rotateX(15deg) rotateY(5deg);
+      box-shadow: 0 20px 40px rgba(0,0,0,0.6);
     }
     
     .skill-badge:hover::before {
@@ -270,76 +305,89 @@
     .soft-skill-item {
       display: flex;
       align-items: center;
-      margin-bottom: 20px;
-      padding: 20px;
-      background: linear-gradient(145deg, #ffffff, #f2f2f2);
-      border-radius: 10px;
-      transition: all 0.7s cubic-bezier(0.165, 0.84, 0.44, 1);
-      box-shadow: 0 5px 15px rgba(0,0,0,0.2);
-      border-left: 5px solid transparent;
+      margin-bottom: 30px;
+      padding: 30px;
+      background: linear-gradient(145deg, #ffffff, #e0f2fe);
+      border-radius: 20px;
+      transition: all 0.9s cubic-bezier(0.25, 0.8, 0.25, 1);
+      box-shadow: 0 15px 30px rgba(0,0,0,0.4);
+      border-left: 8px solid transparent;
+      transform-style: preserve-3d;
+      transform: translateZ(20px);
     }
     
     .soft-skill-item:hover {
-      transform: translateX(10px);
-      box-shadow: 0 10px 25px rgba(0,0,0,0.3);
-      border-left: 5px solid var(--accent-color);
+      transform: translateX(25px) translateZ(50px) rotateY(20deg);
+      box-shadow: 0 25px 50px rgba(0,0,0,0.5);
+      border-left: 8px solid var(--accent-color);
     }
     
     .soft-skill-icon {
-      width: 60px;
-      height: 60px;
+      width: 80px;
+      height: 80px;
       display: flex;
       align-items: center;
       justify-content: center;
       background: var(--gradient-4);
       color: white;
       border-radius: 50%;
-      margin-right: 20px;
+      margin-right: 30px;
       flex-shrink: 0;
-      transition: all 0.5s ease;
-      box-shadow: 0 5px 12px rgba(0,0,0,0.25);
+      transition: all 0.7s ease;
+      box-shadow: 0 12px 25px rgba(0,0,0,0.5);
+      transform-style: preserve-3d;
+      transform: translateZ(20px);
     }
     
     .soft-skill-item:hover .soft-skill-icon {
-      transform: scale(1.1);
-      box-shadow: 0 8px 16px rgba(0,0,0,0.3);
+      transform: scale(1.3) translateZ(50px) rotateY(25deg);
+      box-shadow: 0 20px 35px rgba(0,0,0,0.6);
     }
     
     .soft-skill-name {
-      font-weight: 700;
-      margin-bottom: 8px;
+      font-weight: 800;
+      margin-bottom: 12px;
       color: var(--dark-color);
-      transition: all 0.5s ease;
+      transition: all 0.6s ease;
+      transform-style: preserve-3d;
+      transform: translateZ(10px);
     }
     
     .soft-skill-item:hover .soft-skill-name {
-      color: var(--primary-color);
+      color: var(--secondary-color);
+      transform: translateZ(20px);
     }
     
     .soft-skill-desc {
-      font-size: 0.95rem;
-      color: #555555;
-      transition: all 0.5s ease;
+      font-size: 1.1rem;
+      color: #1e293b;
+      transition: all 0.6s ease;
+      transform-style: preserve-3d;
+      transform: translateZ(5px);
     }
     
     .soft-skill-item:hover .soft-skill-desc {
-      color: #333333;
+      color: var(--primary-color);
+      transform: translateZ(15px);
     }
     
     .animated-underline {
       position: relative;
       display: inline-block;
+      transform-style: preserve-3d;
+      transform: translateZ(10px);
     }
     
     .animated-underline::after {
       content: '';
       position: absolute;
-      bottom: -2px;
+      bottom: -4px;
       left: 0;
       width: 0;
-      height: 3px;
+      height: 5px;
       background: var(--gradient-2);
-      transition: width 0.5s ease;
+      transition: width 0.7s ease;
+      transform: translateZ(5px);
     }
     
     .animated-underline:hover::after {
@@ -347,73 +395,44 @@
     }
     
     @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(20px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-    
-    @keyframes slideInLeft {
-      from { 
-        transform: translateX(-50px);
-        opacity: 0;
-      }
-      to { 
-        transform: translateX(0);
-        opacity: 1;
-      }
-    }
-    
-    @keyframes slideInRight {
-      from { 
-        transform: translateX(50px);
-        opacity: 0;
-      }
-      to { 
-        transform: translateX(0);
-        opacity: 1;
-      }
-    }
-    
-    @keyframes slideInUp {
-      from { 
-        transform: translateY(50px);
-        opacity: 0;
-      }
-      to { 
-        transform: translateY(0);
-        opacity: 1;
-      }
+      from { opacity: 0; transform: translateY(40px) translateZ(0); }
+      to { opacity: 1; transform: translateY(0) translateZ(50px); }
     }
     
     .animate-on-scroll {
       opacity: 0;
-      transform: translateY(30px);
-      transition: all 0.9s cubic-bezier(0.165, 0.84, 0.44, 1);
+      transform: translateY(50px) translateZ(0);
+      transition: all 1.2s cubic-bezier(0.25, 0.8, 0.25, 1);
     }
     
     .animate-on-scroll.visible {
       opacity: 1;
-      transform: translateY(0);
+      transform: translateY(0) translateZ(50px);
     }
     
     .skill-progress {
-      height: 12px;
-      border-radius: 6px;
-      background: #e0e0e0;
-      margin-bottom: 20px;
+      height: 16px;
+      border-radius: 8px;
+      background: #e5e7eb;
+      margin-bottom: 30px;
       overflow: hidden;
       position: relative;
-      box-shadow: inset 0 2px 5px rgba(0,0,0,0.2);
+      box-shadow: inset 0 4px 8px rgba(0,0,0,0.3);
+      transform-style: preserve-3d;
+      transform: translateZ(10px);
     }
     
     .skill-progress-bar {
       height: 100%;
-      border-radius: 6px;
-      background: var(--gradient-3);
+      border-radius: 8px;
+      background: var(--gradient-4);
       width: 0;
-      transition: width 2s cubic-bezier(0.165, 0.84, 0.44, 1), opacity 0.7s ease;
+      transition: width 3s cubic-bezier(0.25, 0.8, 0.25, 1), opacity 0.9s ease;
       opacity: 0;
       position: relative;
       overflow: hidden;
+      transform-style: preserve-3d;
+      transform: translateZ(10px);
     }
     
     .skill-progress-bar::after {
@@ -423,8 +442,9 @@
       left: 0;
       width: 100%;
       height: 100%;
-      background: linear-gradient(45deg, rgba(255,255,255,0.3), rgba(255,255,255,0));
-      animation: shimmer 2.5s infinite;
+      background: linear-gradient(45deg, rgba(255,255,255,0.5), rgba(255,255,255,0));
+      animation: shimmer 1.8s infinite;
+      transform: translateZ(5px);
     }
     
     @keyframes shimmer {
@@ -434,44 +454,77 @@
     
     .skill-progress.visible .skill-progress-bar {
       opacity: 1;
+      transform: translateZ(20px);
+    }
+    
+    .parallax-layer {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: -2;
+      pointer-events: none;
+      transform-style: preserve-3d;
+    }
+    
+    .layer-1 {
+      background: radial-gradient(circle at center, rgba(30, 58, 138, 0.1), transparent 70%);
+      transform: translateZ(-1000px) scale(3);
+    }
+    
+    .layer-2 {
+      background: radial-gradient(circle at center, rgba(16, 185, 129, 0.05), transparent 80%);
+      transform: translateZ(-500px) scale(2);
+    }
+    
+    .layer-3 {
+      background: radial-gradient(circle at center, rgba(59, 130, 246, 0.07), transparent 85%);
+      transform: translateZ(-250px) scale(1.5);
     }
     
     @media (max-width: 768px) {
       .profile-img {
-        width: 130px;
-        height: 130px;
+        width: 160px;
+        height: 160px;
       }
       
       .profile-header {
-        padding: 2rem;
+        padding: 3rem;
       }
       
       .soft-skill-icon {
-        width: 50px;
-        height: 50px;
+        width: 70px;
+        height: 70px;
       }
     }
   </style>
 </head>
 <body class="container mt-5 mb-5">
+  <!-- Parallax background layers -->
+  <div class="parallax-layer layer-1"></div>
+  <div class="parallax-layer layer-2"></div>
+  <div class="parallax-layer layer-3"></div>
+  
   <div class="particles" id="particles"></div>
   
   <div class="row">
     <div class="col-lg-8 mx-auto">
       <div class="profile-header text-center animate-on-scroll">
         <div class="mb-4">
-          <img src="marshad.jpg" alt="Marshad Ahamed" class="profile-img">
+          <img src="https://via.placeholder.com/200" alt="Marshad Ahamed" class="profile-img">
         </div>
         <h1>Marshad Ahamed</h1>
         <p class="lead">I'm Marshad Ahamed Majeed, an undergraduate student at SLIIT, currently in my second year of studies in Information Technology. I have a growing passion for cybersecurity and have recently started my programming journey with Java as my first language.</p>
-        <p class="lead">Outside of tech, I enjoy playing football, love a good cup of coffee, and constantly look for opportunities to challenge myself and grow. I'm still early in my journey, but I'm excited to keep learning, building, and exploring new areas in tech.</p>
+        <p class="lead">Outside of tech, I enjoy playing football, love a good cup of coffee, and constantly look for opportunities to challenge myself and grow. I'm excited to keep learning, building, and exploring new areas in tech.</p>
       </div>
       
       <div class="card p-4 animate-on-scroll">
         <h2>Technical Skills</h2>
         <div class="skills-container mt-3">
           <span class="skill-badge">Java</span>
-          <span class="skill-badge">Cybersecurity Fundamentals</span>
+          <span class="skill-badge">Network Fundamentals</span>
+	  <span class="skill-badge">Web Development</span>
         </div>
         
         <div class="mt-4">
@@ -489,7 +542,7 @@
           <div class="skill-progress">
             <div class="skill-progress-bar" style="width: 10%;"></div>
           </div>
-          <p>Cybersecurity Concepts</p>
+          <p>Network Concepts</p>
           <div class="skill-progress">
             <div class="skill-progress-bar" style="width: 20%;"></div>
           </div>
@@ -582,19 +635,20 @@
   <script>
     function createParticles() {
       const particlesContainer = document.getElementById('particles');
-      const particleCount = 40;
+      const particleCount = 80;
       
       for (let i = 0; i < particleCount; i++) {
         const particle = document.createElement('div');
         particle.classList.add('particle');
         
-        const size = Math.random() * 10 + 5;
+        const size = Math.random() * 20 + 10;
         const posX = Math.random() * 100;
-        const duration = Math.random() * 20 + 10;
+        const duration = Math.random() * 10 + 8;
         const delay = Math.random() * 5;
-        const opacity = Math.random() * 0.5 + 0.2;
-        const gray = Math.floor(Math.random() * 80 + 120);
-        const color = `rgba(${gray}, ${gray}, ${gray}, ${opacity})`;
+        const opacity = Math.random() * 0.6 + 0.4;
+        const hue = Math.random() * 60 + 200; // Blue-green range
+        const color = `hsla(${hue}, 80%, 60%, ${opacity})`;
+        const zDepth = Math.random() * 300 - 150; // Random Z position for depth
         
         particle.style.width = `${size}px`;
         particle.style.height = `${size}px`;
@@ -602,7 +656,8 @@
         particle.style.background = color;
         particle.style.animationDuration = `${duration}s`;
         particle.style.animationDelay = `${delay}s`;
-        particle.style.boxShadow = `0 0 ${size * 1.5}px ${color}`;
+        particle.style.boxShadow = `0 0 ${size * 2.5}px ${color}`;
+        particle.style.transform = `translateZ(${zDepth}px)`;
         
         particlesContainer.appendChild(particle);
       }
@@ -615,11 +670,11 @@
         const elementPosition = element.getBoundingClientRect().top;
         const windowHeight = window.innerHeight;
         
-        if (elementPosition < windowHeight - 100) {
+        if (elementPosition < windowHeight - 200) {
           setTimeout(() => {
             element.classList.add('visible');
-            element.style.transitionDelay = `${index * 0.15}s`;
-          }, 50);
+            element.style.transitionDelay = `${index * 0.25}s`;
+          }, 150);
         }
       });
     }
@@ -631,10 +686,10 @@
         const barPosition = bar.getBoundingClientRect().top;
         const windowHeight = window.innerHeight;
         
-        if (barPosition < windowHeight - 100) {
+        if (barPosition < windowHeight - 200) {
           setTimeout(() => {
             bar.classList.add('visible');
-          }, index * 300);
+          }, index * 500);
         }
       });
     }
@@ -646,10 +701,42 @@
           const rect = card.getBoundingClientRect();
           const x = e.clientX - rect.left;
           const y = e.clientY - rect.top;
-          card.style.background = `radial-gradient(circle at ${x}px ${y}px, #ffffff, #f2f2f2)`;
+          const rotateX = (y / rect.height - 0.5) * 20;
+          const rotateY = (x / rect.width - 0.5) * 20;
+          card.style.background = `radial-gradient(circle at ${x}px ${y}px, #e0f2fe, #ffffff)`;
+          card.style.transform = `translateY(-25px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) translateZ(70px)`;
         });
         card.addEventListener('mouseleave', () => {
-          card.style.background = `linear-gradient(145deg, #ffffff, #f2f2f2)`;
+          card.style.background = `linear-gradient(145deg, #ffffff, #e0f2fe)`;
+          card.style.transform = `translateY(0) rotateX(0deg) rotateY(0deg) translateZ(20px)`;
+        });
+      });
+      
+      const profileHeader = document.querySelector('.profile-header');
+      profileHeader.addEventListener('mousemove', (e) => {
+        const rect = profileHeader.getBoundingClientRect();
+        const x = e.clientX - rect.left;
+        const y = e.clientY - rect.top;
+        const rotateX = (y / rect.height - 0.5) * 15;
+        const rotateY = (x / rect.width - 0.5) * 15;
+        profileHeader.style.transform = `translateY(-20px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) translateZ(80px)`;
+      });
+      profileHeader.addEventListener('mouseleave', () => {
+        profileHeader.style.transform = `translateY(0) rotateX(0deg) rotateY(0deg) translateZ(30px)`;
+      });
+      
+      // Apply parallax effect on mouse move
+      document.body.addEventListener('mousemove', (e) => {
+        const mouseX = e.clientX / window.innerWidth;
+        const mouseY = e.clientY / window.innerHeight;
+        
+        const layers = document.querySelectorAll('.parallax-layer');
+        layers.forEach((layer, index) => {
+          const depth = 1 - (index * 0.3);
+          const moveX = (mouseX - 0.5) * 100 * depth;
+          const moveY = (mouseY - 0.5) * 100 * depth;
+          
+          layer.style.transform = `translate(${moveX}px, ${moveY}px) translateZ(${index === 0 ? -1000 : index === 1 ? -500 : -250}px) scale(${index === 0 ? 3 : index === 1 ? 2 : 1.5})`;
         });
       });
     }
@@ -660,12 +747,12 @@
       animateProgressBars();
       animateBackground();
       
-      document.body.style.background = `linear-gradient(180deg, #f8f8f8 0%, #e0e0e0 100%)`;
+      document.body.style.background = `var(--gradient-1)`;
       document.body.animate([
         { backgroundPosition: '0% 0%' },
         { backgroundPosition: '100% 100%' }
       ], {
-        duration: 30000,
+        duration: 15000,
         iterations: Infinity,
         direction: 'alternate',
         easing: 'ease-in-out'
