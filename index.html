@@ -1,44 +1,33 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Marshad Ahamed - Enhanced 3D Portfolio</title>
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r134/three.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.11.4/dist/gsap.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/three@0.132.2/examples/js/controls/OrbitControls.min.js"></script>
   <style>
-    :root {
-      --primary-color: #1e3a8a;
-      --secondary-color: #3b82f6;
-      --accent-color: #10b981;
-      --light-color: #f0f9ff;
-      --dark-color: #0f172a;
-      --gradient-1: linear-gradient(135deg, #1e3a8a, #3b82f6, #60a5fa);
-      --gradient-2: linear-gradient(135deg, #10b981, #34d399, #6ee7b7);
-      --gradient-3: linear-gradient(135deg, #1e40af, #3b82f6, #93c5fd);
-      --gradient-4: linear-gradient(135deg, #059669, #10b981, #34d399);
-    }
-    
     body {
       font-family: 'Poppins', sans-serif;
-      background: var(--gradient-1);
-      color: var(--dark-color);
-      transition: all 0.5s ease;
+      perspective: 1000px;
+      transform-style: preserve-3d;
       overflow-x: hidden;
-      position: relative;
-      perspective: 2000px;
-      min-height: 100vh;
-      transform-style: preserve-3d;
-      margin: 0;
-      padding: 0;
     }
     
-    .container {
+    .three-d-container {
       transform-style: preserve-3d;
-      z-index: 10;
-      padding-top: 30px;
-      padding-bottom: 50px;
     }
     
-    #three-canvas {
+    .three-d-element {
+      transform-style: preserve-3d;
+      transition: transform 0.5s cubic-bezier(0.25, 0.8, 0.25, 1);
+    }
+    
+    #threejs-container {
       position: fixed;
       top: 0;
       left: 0;
@@ -46,740 +35,344 @@
       height: 100%;
       z-index: -1;
       pointer-events: none;
+    }
+    
+    .gradient-mesh {
+      background: radial-gradient(circle at center, rgba(30, 58, 138, 0.2) 0%, rgba(16, 185, 129, 0.1) 50%, transparent 100%);
+    }
+    
+    .floating {
+      animation: float 6s ease-in-out infinite;
+    }
+    
+    @keyframes float {
+      0%, 100% { transform: translateY(0) translateZ(0); }
+      50% { transform: translateY(-20px) translateZ(20px); }
+    }
+    
+    .glow {
+      filter: drop-shadow(0 0 10px rgba(59, 130, 246, 0.7));
+    }
+    
+    .glow:hover {
+      filter: drop-shadow(0 0 20px rgba(16, 185, 129, 0.9));
+    }
+    
+    .text-3d {
+      text-shadow: 2px 2px 4px rgba(0,0,0,0.2),
+                   4px 4px 6px rgba(0,0,0,0.1),
+                   6px 6px 8px rgba(0,0,0,0.05);
     }
     
     .parallax-layer {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      z-index: -2;
-      pointer-events: none;
       transform-style: preserve-3d;
-    }
-    
-    .layer-1 {
-      background: radial-gradient(circle at center, rgba(30, 58, 138, 0.15), transparent 70%);
-      transform: translateZ(-1200px) scale(3.5);
-    }
-    
-    .layer-2 {
-      background: radial-gradient(circle at center, rgba(16, 185, 129, 0.1), transparent 80%);
-      transform: translateZ(-600px) scale(2.5);
-    }
-    
-    .layer-3 {
-      background: radial-gradient(circle at center, rgba(59, 130, 246, 0.08), transparent 85%);
-      transform: translateZ(-300px) scale(2);
-    }
-    
-    .profile-header {
-      background: var(--gradient-3);
-      color: white;
-      border-radius: 30px;
-      padding: 4.5rem;
-      margin-bottom: 4rem;
-      box-shadow: 0 30px 70px rgba(0,0,0,0.7);
-      animation: fadeIn 1.8s ease-out;
-      position: relative;
-      overflow: hidden;
-      transform-style: preserve-3d;
-      transition: transform 0.8s ease, box-shadow 0.8s ease;
-      transform: translateZ(50px);
-      backdrop-filter: blur(10px);
-    }
-    
-    .profile-header:hover {
-      transform: translateY(-25px) rotateX(20deg) rotateY(20deg) translateZ(100px);
-      box-shadow: 0 40px 80px rgba(0,0,0,0.8);
-    }
-    
-    .profile-header::before {
-      content: '';
-      position: absolute;
-      top: -50%;
-      left: -50%;
-      width: 200%;
-      height: 200%;
-      background: radial-gradient(circle, rgba(255,255,255,0.3) 0%, rgba(255,255,255,0) 70%);
-      animation: rotate 15s linear infinite;
-      z-index: 0;
-      transform: translateZ(-30px);
-    }
-    
-    .profile-header > * {
-      position: relative;
-      z-index: 1;
-    }
-    
-    @keyframes rotate {
-      from { transform: rotate(0deg) translateZ(-50px); }
-      to { transform: rotate(360deg) translateZ(50px); }
-    }
-    
-    .profile-img {
-      width: 220px;
-      height: 220px;
-      object-fit: cover;
-      border: 12px solid #ffffff;
-      border-radius: 50%;
-      box-shadow: 0 30px 60px rgba(0,0,0,0.8);
-      transition: all 1s cubic-bezier(0.25, 0.8, 0.25, 1);
-      animation: subtleFloat 3s ease-in-out infinite;
-      transform-style: preserve-3d;
-      filter: brightness(110%);
-      transform: translateZ(60px);
-    }
-    
-    @keyframes subtleFloat {
-      0%, 100% { transform: translateY(0) translateZ(60px) rotateX(0deg); }
-      50% { transform: translateY(-25px) translateZ(100px) rotateX(15deg); }
-    }
-    
-    .profile-img:hover {
-      transform: scale(1.3) translateZ(150px) rotateY(25deg);
-      box-shadow: 0 40px 80px rgba(0,0,0,0.9);
-      filter: brightness(120%) drop-shadow(0 0 20px var(--accent-color));
-    }
-    
-    h1 {
-      font-weight: 900;
-      margin-bottom: 1.5rem;
-      color: white;
-      text-shadow: 0 6px 15px rgba(0,0,0,0.8);
-      animation: fadeIn 1.8s ease-out;
-      transition: all 0.8s ease;
-      transform-style: preserve-3d;
-      transform: translateZ(40px);
-    }
-    
-    h1:hover {
-      text-shadow: 0 10px 25px rgba(0,0,0,0.9);
-      transform: translateZ(60px);
-    }
-    
-    h2 {
-      color: var(--primary-color);
-      border-bottom: 6px solid var(--secondary-color);
-      padding-bottom: 1.5rem;
-      margin-top: 4rem;
-      position: relative;
-      overflow: hidden;
-      transition: color 0.7s ease;
-      transform-style: preserve-3d;
-      transform: translateZ(30px);
-    }
-    
-    h2::after {
-      content: '';
-      position: absolute;
-      bottom: -6px;
-      left: 0;
-      width: 100%;
-      height: 6px;
-      background: var(--gradient-2);
-      transform: scaleX(0);
-      transform-origin: left;
-      transition: transform 0.8s ease;
-      transform: translateZ(15px);
-    }
-    
-    .card:hover h2::after {
-      transform: scaleX(1);
-    }
-    
-    .card {
-      border: none;
-      border-radius: 30px;
-      box-shadow: 0 25px 60px rgba(0,0,0,0.6);
-      transition: all 1s cubic-bezier(0.25, 0.8, 0.25, 1);
-      margin-bottom: 4rem;
-      background: linear-gradient(145deg, #ffffff, #e0f2fe);
-      overflow: hidden;
-      position: relative;
-      transform-style: preserve-3d;
-      transform: translateZ(40px);
-      backdrop-filter: blur(10px);
-    }
-    
-    .card::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 12px;
-      background: var(--gradient-4);
-      transform: scaleX(0);
-      transform-origin: left;
-      transition: transform 0.8s ease;
-      transform: translateZ(20px);
-    }
-    
-    .card:hover {
-      transform: translateY(-30px) rotateX(20deg) rotateY(20deg) translateZ(100px);
-      box-shadow: 0 40px 80px rgba(0,0,0,0.7);
-    }
-    
-    .card:hover::before {
-      transform: scaleX(1);
-    }
-    
-    .contact-info i {
-      color: var(--secondary-color);
-      margin-right: 18px;
-      width: 35px;
-      text-align: center;
-      transition: all 0.7s ease;
-      transform-style: preserve-3d;
-      transform: translateZ(20px);
-    }
-    
-    .contact-info p:hover i {
-      transform: translateX(15px) translateZ(50px) rotateY(25deg);
-      color: var(--accent-color);
-      filter: drop-shadow(0 0 15px var(--accent-color));
-    }
-    
-    .social-links a {
-      color: var(--dark-color);
-      text-decoration: none;
-      transition: all 0.7s ease;
-      display: inline-block;
-      position: relative;
-      transform-style: preserve-3d;
-      transform: translateZ(20px);
-    }
-    
-    .social-links a:hover {
-      color: var(--accent-color);
-      transform: translateX(15px) translateZ(40px) rotateY(20deg);
-      filter: drop-shadow(0 0 15px var(--accent-color));
-    }
-    
-    .social-links i {
-      transition: all 0.7s ease;
-      transform: translateZ(10px);
-    }
-    
-    .social-links a:hover i {
-      transform: scale(1.6) translateZ(40px);
-    }
-    
-    .skill-badge {
-      background: var(--gradient-4);
-      color: white;
-      padding: 16px 40px;
-      border-radius: 40px;
-      display: inline-block;
-      margin: 15px;
-      transition: all 0.8s ease;
-      box-shadow: 0 15px 30px rgba(0,0,0,0.6);
-      position: relative;
-      overflow: hidden;
-      transform-style: preserve-3d;
-      transform: translateZ(30px);
-    }
-    
-    .skill-badge::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: linear-gradient(45deg, rgba(255,255,255,0.6), rgba(255,255,255,0));
-      transform: translateX(-100%);
-      transition: transform 0.7s ease;
-      transform: translateZ(15px);
-    }
-    
-    .skill-badge:hover {
-      transform: translateY(-12px) translateZ(50px) rotateX(20deg) rotateY(10deg);
-      box-shadow: 0 25px 50px rgba(0,0,0,0.7);
-      filter: drop-shadow(0 0 20px var(--accent-color));
-    }
-    
-    .skill-badge:hover::before {
-      transform: translateX(0);
-    }
-    
-    .soft-skill-item {
-      display: flex;
-      align-items: center;
-      margin-bottom: 35px;
-      padding: 35px;
-      background: linear-gradient(145deg, #ffffff, #e0f2fe);
-      border-radius: 25px;
-      transition: all 1s cubic-bezier(0.25, 0.8, 0.25, 1);
-      box-shadow: 0 20px 40px rgba(0,0,0,0.5);
-      border-left: 10px solid transparent;
-      transform-style: preserve-3d;
-      transform: translateZ(30px);
-    }
-    
-    .soft-skill-item:hover {
-      transform: translateX(30px) translateZ(60px) rotateY(25deg);
-      box-shadow: 0 30px 60px rgba(0,0,0,0.6);
-      border-left: 10px solid var(--accent-color);
-    }
-    
-    .soft-skill-icon {
-      width: 90px;
-      height: 90px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      background: var(--gradient-4);
-      color: white;
-      border-radius: 50%;
-      margin-right: 35px;
-      flex-shrink: 0;
-      transition: all 0.8s ease;
-      box-shadow: 0 15px 30px rgba(0,0,0,0.6);
-      transform-style: preserve-3d;
-      transform: translateZ(30px);
-    }
-    
-    .soft-skill-item:hover .soft-skill-icon {
-      transform: scale(1.4) translateZ(60px) rotateY(30deg);
-      box-shadow: 0 25px 40px rgba(0,0,0,0.7);
-      filter: drop-shadow(0 0 20px var(--accent-color));
-    }
-    
-    .soft-skill-name {
-      font-weight: 800;
-      margin-bottom: 15px;
-      color: var(--dark-color);
-      transition: all 0.7s ease;
-      transform-style: preserve-3d;
-      transform: translateZ(15px);
-    }
-    
-    .soft-skill-item:hover .soft-skill-name {
-      color: var(--secondary-color);
-      transform: translateZ(30px);
-    }
-    
-    .soft-skill-desc {
-      font-size: 1.2rem;
-      color: #1e293b;
-      transition: all 0.7s ease;
-      transform-style: preserve-3d;
-      transform: translateZ(10px);
-    }
-    
-    .soft-skill-item:hover .soft-skill-desc {
-      color: var(--primary-color);
-      transform: translateZ(20px);
-    }
-    
-    .animated-underline {
-      position: relative;
-      display: inline-block;
-      transform-style: preserve-3d;
-      transform: translateZ(15px);
-    }
-    
-    .animated-underline::after {
-      content: '';
-      position: absolute;
-      bottom: -5px;
-      left: 0;
-      width: 0;
-      height: 6px;
-      background: var(--gradient-2);
-      transition: width 0.8s ease;
-      transform: translateZ(10px);
-    }
-    
-    .animated-underline:hover::after {
-      width: 100%;
-    }
-    
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(60px) translateZ(0); }
-      to { opacity: 1; transform: translateY(0) translateZ(60px); }
-    }
-    
-    .animate-on-scroll {
-      opacity: 0;
-      transform: translateY(70px) translateZ(0);
-      transition: all 1.5s cubic-bezier(0.25, 0.8, 0.25, 1);
-    }
-    
-    .animate-on-scroll.visible {
-      opacity: 1;
-      transform: translateY(0) translateZ(60px);
-    }
-    
-    .skill-progress {
-      height: 18px;
-      border-radius: 9px;
-      background: #e5e7eb;
-      margin-bottom: 35px;
-      overflow: hidden;
-      position: relative;
-      box-shadow: inset 0 5px 10px rgba(0,0,0,0.4);
-      transform-style: preserve-3d;
-      transform: translateZ(20px);
-    }
-    
-    .skill-progress-bar {
-      height: 100%;
-      border-radius: 9px;
-      background: var(--gradient-4);
-      width: 0;
-      transition: width 3.5s cubic-bezier(0.25, 0.8, 0.25, 1), opacity 1s ease;
-      opacity: 0;
-      position: relative;
-      overflow: hidden;
-      transform-style: preserve-3d;
-      transform: translateZ(15px);
-    }
-    
-    .skill-progress-bar::after {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: linear-gradient(45deg, rgba(255,255,255,0.6), rgba(255,255,255,0));
-      animation: shimmer 1.5s infinite;
-      transform: translateZ(10px);
-    }
-    
-    @keyframes shimmer {
-      0% { transform: translateX(-100%); }
-      100% { transform: translateX(100%); }
-    }
-    
-    .skill-progress.visible .skill-progress-bar {
-      opacity: 1;
-      transform: translateZ(25px);
-    }
-    
-    /* New 3D Effects */
-    .floating-object {
-      position: absolute;
-      z-index: -1;
-      transform-style: preserve-3d;
-      animation: floatAround 20s infinite linear;
-    }
-    
-    @keyframes floatAround {
-      0% { transform: translateZ(-300px) rotateX(0) rotateY(0) rotateZ(0); }
-      25% { transform: translateZ(-300px) rotateX(90deg) rotateY(90deg) rotateZ(45deg); }
-      50% { transform: translateZ(-300px) rotateX(180deg) rotateY(180deg) rotateZ(90deg); }
-      75% { transform: translateZ(-300px) rotateX(270deg) rotateY(270deg) rotateZ(135deg); }
-      100% { transform: translateZ(-300px) rotateX(360deg) rotateY(360deg) rotateZ(180deg); }
-    }
-    
-    .three-d-shadow {
-      box-shadow: 
-        0 10px 20px rgba(0,0,0,0.3),
-        0 30px 60px rgba(0,0,0,0.2),
-        inset 0 -5px 15px rgba(0,0,0,0.1);
-    }
-    
-    .three-d-text {
-      text-shadow: 
-        1px 1px 1px rgba(0,0,0,0.1),
-        2px 2px 2px rgba(0,0,0,0.1),
-        4px 4px 4px rgba(0,0,0,0.1);
-    }
-    
-    .three-d-button {
-      transition: all 0.3s ease;
-      transform: translateZ(20px);
-    }
-    
-    .three-d-button:hover {
-      transform: translateY(-5px) translateZ(40px);
-      box-shadow: 0 15px 30px rgba(0,0,0,0.3);
-    }
-    
-    .interactive-light {
-      position: absolute;
-      width: 300px;
-      height: 300px;
-      border-radius: 50%;
-      background: radial-gradient(circle, rgba(255,255,255,0.3), transparent 70%);
-      filter: blur(60px);
-      pointer-events: none;
-      z-index: 1;
-      transform: translateZ(-100px);
-    }
-    
-    .controls {
-      position: fixed;
-      bottom: 20px;
-      right: 20px;
-      z-index: 1000;
-      background: rgba(255,255,255,0.1);
-      backdrop-filter: blur(10px);
-      border-radius: 20px;
-      padding: 15px;
-      transform: translateZ(50px);
-    }
-    
-    .control-btn {
-      background: var(--gradient-4);
-      color: white;
-      border: none;
-      border-radius: 50%;
-      width: 50px;
-      height: 50px;
-      margin: 5px;
-      cursor: pointer;
-      font-size: 20px;
-      transition: all 0.3s ease;
-      transform: translateZ(20px);
-      box-shadow: 0 5px 15px rgba(0,0,0,0.3);
-    }
-    
-    .control-btn:hover {
-      transform: translateY(-5px) translateZ(40px);
-      box-shadow: 0 10px 20px rgba(0,0,0,0.4);
-    }
-    
-    @media (max-width: 768px) {
-      .profile-img {
-        width: 180px;
-        height: 180px;
-      }
-      
-      .profile-header {
-        padding: 3.5rem;
-      }
-      
-      .soft-skill-icon {
-        width: 80px;
-        height: 80px;
-      }
-      
-      .controls {
-        bottom: 10px;
-        right: 10px;
-      }
-      
-      .control-btn {
-        width: 40px;
-        height: 40px;
-        font-size: 16px;
-      }
+      will-change: transform;
     }
   </style>
 </head>
-<body class="container mt-5 mb-5">
-  <!-- Three.js canvas -->
-  <canvas id="three-canvas"></canvas>
+<body class="bg-gradient-to-br from-blue-900 via-blue-600 to-blue-300 min-h-screen text-gray-900">
+  <!-- Three.js Container -->
+  <div id="threejs-container"></div>
   
-  <!-- Parallax background layers -->
-  <div class="parallax-layer layer-1"></div>
-  <div class="parallax-layer layer-2"></div>
-  <div class="parallax-layer layer-3"></div>
-  
-  <!-- Interactive light source -->
-  <div class="interactive-light" id="interactive-light"></div>
-  
-  <!-- Floating 3D objects -->
-  <div class="floating-object" id="cube" style="top: 10%; left: 10%; width: 80px; height: 80px; background: linear-gradient(45deg, var(--secondary-color), var(--accent-color));"></div>
-  <div class="floating-object" id="sphere" style="top: 70%; left: 20%; width: 100px; height: 100px; border-radius: 50%; background: radial-gradient(circle, var(--primary-color), transparent);"></div>
-  <div class="floating-object" id="pyramid" style="top: 40%; left: 80%; width: 0; height: 0; border-left: 50px solid transparent; border-right: 50px solid transparent; border-bottom: 100px solid var(--accent-color);"></div>
-  
-  <div class="controls">
-    <button class="control-btn" id="effect-toggle"><i class="fas fa-magic"></i></button>
-    <button class="control-btn" id="theme-toggle"><i class="fas fa-palette"></i></button>
+  <!-- Floating 3D Background Elements -->
+  <div class="fixed inset-0 overflow-hidden pointer-events-none">
+    <div class="absolute w-64 h-64 rounded-full bg-blue-500 opacity-10 blur-3xl top-1/4 left-1/4 transform -translate-x-1/2 -translate-y-1/2"></div>
+    <div class="absolute w-96 h-96 rounded-full bg-emerald-500 opacity-10 blur-3xl top-3/4 right-1/4 transform translate-x-1/2 -translate-y-1/2"></div>
   </div>
   
-  <div class="row">
-    <div class="col-lg-8 mx-auto">
-      <div class="profile-header text-center animate-on-scroll">
-        <div class="mb-4">
-          <img src="marshad.jpg" alt="Marshad Ahamed" class="profile-img">
+  <!-- Main Content -->
+  <div class="container mx-auto px-4 py-12 relative z-10 three-d-container">
+    <div class="max-w-4xl mx-auto">
+      <!-- Profile Header -->
+      <div class="bg-gradient-to-br from-blue-800 to-blue-600 rounded-3xl p-8 md:p-12 mb-12 shadow-2xl three-d-element hover:rotate-x-6 hover:rotate-y-3 hover:translate-z-20 transition-transform duration-500">
+        <div class="text-center mb-8">
+          <div class="relative inline-block floating">
+            <img src="marshad.jpg" alt="Marshad Ahamed" class="w-48 h-48 md:w-56 md:h-56 rounded-full border-8 border-white shadow-2xl glow transform transition-transform duration-500 hover:scale-110 hover:rotate-y-12">
+            <div class="absolute inset-0 rounded-full border-8 border-transparent animate-spin-slow" style="border-top-color: rgba(255,255,255,0.3); border-right-color: rgba(255,255,255,0.1);"></div>
+          </div>
         </div>
-        <h1>Marshad Ahamed</h1>
-        <p class="lead">I'm Marshad Ahamed Majeed, an undergraduate student at SLIIT, currently in my second year of studies in Information Technology. I have a growing passion for cybersecurity and have recently started my programming journey with Java as my first language.</p>
-        <p class="lead">Outside of tech, I enjoy playing football, love a good cup of coffee, and constantly look for opportunities to challenge myself and grow. I'm excited to keep learning, building, and exploring new areas in tech.</p>
+        <h1 class="text-4xl md:text-5xl font-bold text-white text-center mb-6 text-3d">Marshad Ahamed</h1>
+        <div class="text-lg text-blue-100 leading-relaxed space-y-4">
+          <p>I'm Marshad Ahamed Majeed, an undergraduate student at SLIIT, currently in my second year of studies in Information Technology. I have a growing passion for cybersecurity and have recently started my programming journey with Java as my first language.</p>
+          <p>Outside of tech, I enjoy playing football, love a good cup of coffee, and constantly look for opportunities to challenge myself and grow. I'm excited to keep learning, building, and exploring new areas in tech.</p>
+        </div>
       </div>
       
-      <div class="card p-4 animate-on-scroll">
-        <h2>Technical Skills</h2>
-        <div class="skills-container mt-3">
-          <span class="skill-badge">Java</span>
-          <span class="skill-badge">Network Fundamentals</span>
-          <span class="skill-badge">Web Development</span>
+      <!-- Technical Skills -->
+      <div class="bg-white bg-opacity-90 backdrop-blur-lg rounded-3xl p-8 mb-12 shadow-xl three-d-element hover:rotate-x-3 hover:rotate-y-3 hover:translate-z-10 transition-transform duration-500">
+        <h2 class="text-3xl font-bold text-blue-900 mb-6 pb-4 border-b-4 border-blue-500 inline-block">Technical Skills</h2>
+        <div class="flex flex-wrap gap-4 mb-8">
+          <span class="px-6 py-3 bg-gradient-to-r from-emerald-500 to-emerald-600 text-white rounded-full font-medium shadow-lg hover:scale-105 hover:shadow-xl transition-all duration-300">Java</span>
+          <span class="px-6 py-3 bg-gradient-to-r from-blue-500 to-blue-600 text-white rounded-full font-medium shadow-lg hover:scale-105 hover:shadow-xl transition-all duration-300">Network Fundamentals</span>
+          <span class="px-6 py-3 bg-gradient-to-r from-indigo-500 to-indigo-600 text-white rounded-full font-medium shadow-lg hover:scale-105 hover:shadow-xl transition-all duration-300">Web Development</span>
         </div>
         
-        <div class="mt-4">
-          <h4 class="mb-3">Skill Level</h4>
-          <div class="skill-progress">
-            <div class="skill-progress-bar" data-value="75"></div>
-          </div>
-          <p>Java Programming</p>
-          
-          <div class="skill-progress">
-            <div class="skill-progress-bar" data-value="65"></div>
-          </div>
-          <p>Web Development</p>
-          
-          <div class="skill-progress">
-            <div class="skill-progress-bar" data-value="20"></div>
-          </div>
-          <p>Network Concepts</p>
-          <div class="skill-progress">
-            <div class="skill-progress-bar" data-value="30"></div>
-          </div>
-
-        </div>
-      </div>
-      
-      <div class="card p-4 animate-on-scroll">
-        <h2>Soft Skills</h2>
-        <div class="soft-skills-container mt-3">
-          <div class="soft-skill-item">
-            <div class="soft-skill-icon">
-              <i class="fas fa-brain"></i>
+        <div class="space-y-6">
+          <div>
+            <div class="flex justify-between mb-2">
+              <span class="font-medium">Java Programming</span>
+              <span class="font-bold text-blue-700">75%</span>
             </div>
-            <div>
-              <div class="soft-skill-name">Critical Thinking</div>
-              <div class="soft-skill-desc">Analyzing complex problems to develop effective solutions</div>
+            <div class="h-3 bg-gray-200 rounded-full overflow-hidden">
+              <div class="h-full bg-gradient-to-r from-blue-500 to-blue-600 rounded-full progress-bar" data-width="75%"></div>
             </div>
           </div>
           
-          <div class="soft-skill-item">
-            <div class="soft-skill-icon">
-              <i class="fas fa-puzzle-piece"></i>
+          <div>
+            <div class="flex justify-between mb-2">
+              <span class="font-medium">Web Development</span>
+              <span class="font-bold text-blue-700">65%</span>
             </div>
-            <div>
-              <div class="soft-skill-name">Problem Solving</div>
-              <div class="soft-skill-desc">Identifying issues and implementing strategic solutions</div>
-            </div>
-          </div>
-          
-          <div class="soft-skill-item">
-            <div class="soft-skill-icon">
-              <i class="fas fa-people-group"></i>
-            </div>
-            <div>
-              <div class="soft-skill-name">Teamwork</div>
-              <div class="soft-skill-desc">Collaborating effectively to achieve common goals</div>
+            <div class="h-3 bg-gray-200 rounded-full overflow-hidden">
+              <div class="h-full bg-gradient-to-r from-blue-500 to-blue-600 rounded-full progress-bar" data-width="65%"></div>
             </div>
           </div>
           
-          <div class="soft-skill-item">
-            <div class="soft-skill-icon">
-              <i class="fas fa-comments"></i>
+          <div>
+            <div class="flex justify-between mb-2">
+              <span class="font-medium">Network Concepts</span>
+              <span class="font-bold text-blue-700">20%</span>
             </div>
-            <div>
-              <div class="soft-skill-name">Communication</div>
-              <div class="soft-skill-desc">Expressing ideas clearly and listening actively</div>
+            <div class="h-3 bg-gray-200 rounded-full overflow-hidden">
+              <div class="h-full bg-gradient-to-r from-blue-500 to-blue-600 rounded-full progress-bar" data-width="20%"></div>
             </div>
           </div>
         </div>
       </div>
       
-      <div class="card p-4 animate-on-scroll">
-        <h2>Projects</h2>
-        <div class="project-item mb-4">
-          <h4 class="animated-underline">Java Console Application</h4>
-          <p>Developed a student management system using Java that handles student records, grades, and course information.</p>
-          <span class="skill-badge">Java</span>
-          <span class="skill-badge">OOP</span>
+      <!-- Soft Skills -->
+      <div class="bg-white bg-opacity-90 backdrop-blur-lg rounded-3xl p-8 mb-12 shadow-xl three-d-element hover:rotate-x-3 hover:rotate-y-3 hover:translate-z-10 transition-transform duration-500">
+        <h2 class="text-3xl font-bold text-blue-900 mb-8 pb-4 border-b-4 border-blue-500 inline-block">Soft Skills</h2>
+        <div class="grid md:grid-cols-2 gap-6">
+          <div class="bg-gradient-to-br from-white to-gray-50 p-6 rounded-2xl shadow-md hover:shadow-xl transition-shadow duration-300 transform hover:-translate-y-2 hover:rotate-y-3">
+            <div class="flex items-center mb-4">
+              <div class="w-16 h-16 bg-gradient-to-r from-emerald-500 to-emerald-600 rounded-full flex items-center justify-center text-white text-2xl mr-4 shadow-md">
+                <i class="fas fa-brain"></i>
+              </div>
+              <h3 class="text-xl font-bold text-blue-800">Critical Thinking</h3>
+            </div>
+            <p class="text-gray-700">Analyzing complex problems to develop effective solutions</p>
+          </div>
+          
+          <div class="bg-gradient-to-br from-white to-gray-50 p-6 rounded-2xl shadow-md hover:shadow-xl transition-shadow duration-300 transform hover:-translate-y-2 hover:rotate-y-3">
+            <div class="flex items-center mb-4">
+              <div class="w-16 h-16 bg-gradient-to-r from-blue-500 to-blue-600 rounded-full flex items-center justify-center text-white text-2xl mr-4 shadow-md">
+                <i class="fas fa-puzzle-piece"></i>
+              </div>
+              <h3 class="text-xl font-bold text-blue-800">Problem Solving</h3>
+            </div>
+            <p class="text-gray-700">Identifying issues and implementing strategic solutions</p>
+          </div>
+          
+          <div class="bg-gradient-to-br from-white to-gray-50 p-6 rounded-2xl shadow-md hover:shadow-xl transition-shadow duration-300 transform hover:-translate-y-2 hover:rotate-y-3">
+            <div class="flex items-center mb-4">
+              <div class="w-16 h-16 bg-gradient-to-r from-indigo-500 to-indigo-600 rounded-full flex items-center justify-center text-white text-2xl mr-4 shadow-md">
+                <i class="fas fa-people-group"></i>
+              </div>
+              <h3 class="text-xl font-bold text-blue-800">Teamwork</h3>
+            </div>
+            <p class="text-gray-700">Collaborating effectively to achieve common goals</p>
+          </div>
+          
+          <div class="bg-gradient-to-br from-white to-gray-50 p-6 rounded-2xl shadow-md hover:shadow-xl transition-shadow duration-300 transform hover:-translate-y-2 hover:rotate-y-3">
+            <div class="flex items-center mb-4">
+              <div class="w-16 h-16 bg-gradient-to-r from-purple-500 to-purple-600 rounded-full flex items-center justify-center text-white text-2xl mr-4 shadow-md">
+                <i class="fas fa-comments"></i>
+              </div>
+              <h3 class="text-xl font-bold text-blue-800">Communication</h3>
+            </div>
+            <p class="text-gray-700">Expressing ideas clearly and listening actively</p>
+          </div>
         </div>
+      </div>
+      
+      <!-- Projects -->
+      <div class="bg-white bg-opacity-90 backdrop-blur-lg rounded-3xl p-8 mb-12 shadow-xl three-d-element hover:rotate-x-3 hover:rotate-y-3 hover:translate-z-10 transition-transform duration-500">
+        <h2 class="text-3xl font-bold text-blue-900 mb-8 pb-4 border-b-4 border-blue-500 inline-block">Projects</h2>
         
-        <div class="project-item">
-          <h4 class="animated-underline">Personal Portfolio Website</h4>
-          <p>Designed and developed this responsive portfolio website to showcase my skills and projects.</p>
-          <span class="skill-badge">HTML</span>
-          <span class="skill-badge">CSS</span>
-          <span class="skill-badge">JavaScript</span>
-          <span class="skill-badge">Three.js</span>
+        <div class="space-y-8">
+          <div class="bg-gradient-to-br from-white to-gray-50 p-6 rounded-2xl shadow-md hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 hover:rotate-y-2">
+            <h3 class="text-2xl font-bold text-blue-800 mb-3 relative inline-block">
+              <span class="relative z-10">Java Console Application</span>
+              <span class="absolute bottom-0 left-0 w-full h-2 bg-blue-200 opacity-50 rounded-full -z-1"></span>
+            </h3>
+            <p class="text-gray-700 mb-4">Developed a student management system using Java that handles student records, grades, and course information.</p>
+            <div class="flex flex-wrap gap-2">
+              <span class="px-4 py-1 bg-blue-100 text-blue-800 rounded-full text-sm font-medium">Java</span>
+              <span class="px-4 py-1 bg-blue-100 text-blue-800 rounded-full text-sm font-medium">OOP</span>
+            </div>
+          </div>
+          
+          <div class="bg-gradient-to-br from-white to-gray-50 p-6 rounded-2xl shadow-md hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 hover:rotate-y-2">
+            <h3 class="text-2xl font-bold text-blue-800 mb-3 relative inline-block">
+              <span class="relative z-10">Personal Portfolio Website</span>
+              <span class="absolute bottom-0 left-0 w-full h-2 bg-blue-200 opacity-50 rounded-full -z-1"></span>
+            </h3>
+            <p class="text-gray-700 mb-4">Designed and developed this responsive portfolio website to showcase my skills and projects.</p>
+            <div class="flex flex-wrap gap-2">
+              <span class="px-4 py-1 bg-blue-100 text-blue-800 rounded-full text-sm font-medium">HTML</span>
+              <span class="px-4 py-1 bg-blue-100 text-blue-800 rounded-full text-sm font-medium">CSS</span>
+              <span class="px-4 py-1 bg-blue-100 text-blue-800 rounded-full text-sm font-medium">JavaScript</span>
+              <span class="px-4 py-1 bg-blue-100 text-blue-800 rounded-full text-sm font-medium">Three.js</span>
+            </div>
+          </div>
         </div>
       </div>
       
-      <div class="card p-4 animate-on-scroll">
-        <h2>Contact</h2>
-        <div class="contact-info mt-3">
-          <p><i class="fas fa-envelope"></i> marshadahamedh@gmail.com</p>
-          <p><i class="fas fa-phone"></i> +94 0766756648</p>
-          <p><i class="fas fa-map-marker-alt"></i> Weligama, Sri Lanka</p>
+      <!-- Contact -->
+      <div class="bg-white bg-opacity-90 backdrop-blur-lg rounded-3xl p-8 mb-12 shadow-xl three-d-element hover:rotate-x-3 hover:rotate-y-3 hover:translate-z-10 transition-transform duration-500">
+        <h2 class="text-3xl font-bold text-blue-900 mb-6 pb-4 border-b-4 border-blue-500 inline-block">Contact</h2>
+        <div class="space-y-4 text-lg">
+          <div class="flex items-center hover:text-blue-600 transition-colors duration-300">
+            <i class="fas fa-envelope text-blue-500 mr-4 text-xl w-8"></i>
+            <span>marshadahamedh@gmail.com</span>
+          </div>
+          <div class="flex items-center hover:text-blue-600 transition-colors duration-300">
+            <i class="fas fa-phone text-blue-500 mr-4 text-xl w-8"></i>
+            <span>+94 0766756648</span>
+          </div>
+          <div class="flex items-center hover:text-blue-600 transition-colors duration-300">
+            <i class="fas fa-map-marker-alt text-blue-500 mr-4 text-xl w-8"></i>
+            <span>Weligama, Sri Lanka</span>
+          </div>
         </div>
       </div>
       
-      <div class="card p-4 animate-on-scroll">
-        <h2>Links</h2>
-        <ul class="list-unstyled social-links mt-3">
-          <li class="mb-2"><i class="fab fa-github"></i> <a href="https://github.com/marshadmajeedh" target="_blank" class="animated-underline">GitHub</a></li>
-          <li><i class="fab fa-linkedin"></i> <a href="https://www.linkedin.com/in/marshad-ahamedh-92ba01317/" target="_blank" class="animated-underline">LinkedIn</a></li>
-        </ul>
+      <!-- Links -->
+      <div class="bg-white bg-opacity-90 backdrop-blur-lg rounded-3xl p-8 shadow-xl three-d-element hover:rotate-x-3 hover:rotate-y-3 hover:translate-z-10 transition-transform duration-500">
+        <h2 class="text-3xl font-bold text-blue-900 mb-6 pb-4 border-b-4 border-blue-500 inline-block">Links</h2>
+        <div class="space-y-4">
+          <a href="https://github.com/marshadmajeedh" target="_blank" class="flex items-center text-lg hover:text-blue-600 transition-colors duration-300 group">
+            <i class="fab fa-github text-blue-500 mr-4 text-2xl w-8 transform group-hover:scale-125 group-hover:text-blue-600 transition-all duration-300"></i>
+            <span class="relative">
+              GitHub
+              <span class="absolute bottom-0 left-0 w-0 h-0.5 bg-blue-500 group-hover:w-full transition-all duration-300"></span>
+            </span>
+          </a>
+          <a href="https://www.linkedin.com/in/marshad-ahamedh-92ba01317/" target="_blank" class="flex items-center text-lg hover:text-blue-600 transition-colors duration-300 group">
+            <i class="fab fa-linkedin text-blue-500 mr-4 text-2xl w-8 transform group-hover:scale-125 group-hover:text-blue-600 transition-all duration-300"></i>
+            <span class="relative">
+              LinkedIn
+              <span class="absolute bottom-0 left-0 w-0 h-0.5 bg-blue-500 group-hover:w-full transition-all duration-300"></span>
+            </span>
+          </a>
+        </div>
       </div>
     </div>
   </div>
 
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r134/three.min.js"></script>
+  <!-- Floating Controls -->
+  <div class="fixed bottom-6 right-6 z-50 flex flex-col space-y-3">
+    <button id="theme-toggle" class="w-12 h-12 bg-gradient-to-br from-blue-600 to-blue-700 rounded-full shadow-lg flex items-center justify-center text-white text-xl hover:scale-110 hover:shadow-xl transition-all duration-300">
+      <i class="fas fa-palette"></i>
+    </button>
+    <button id="effect-toggle" class="w-12 h-12 bg-gradient-to-br from-emerald-600 to-emerald-700 rounded-full shadow-lg flex items-center justify-center text-white text-xl hover:scale-110 hover:shadow-xl transition-all duration-300">
+      <i class="fas fa-magic"></i>
+    </button>
+  </div>
+
   <script>
-    // Enhanced Three.js scene
+    // Enhanced Three.js Scene
     function initThreeJS() {
+      const container = document.getElementById('threejs-container');
       const scene = new THREE.Scene();
       const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
       const renderer = new THREE.WebGLRenderer({ 
-        canvas: document.getElementById('three-canvas'),
-        alpha: true,
-        antialias: true
+        antialias: true,
+        alpha: true
       });
       
       renderer.setPixelRatio(window.devicePixelRatio);
       renderer.setSize(window.innerWidth, window.innerHeight);
-      renderer.setClearColor(0x000000, 0);
+      container.appendChild(renderer.domElement);
       
-      // Create floating 3D shapes
+      // Create a galaxy of floating shapes
       const shapes = [];
-      const geometries = [
-        new THREE.BoxGeometry(8, 8, 8),
-        new THREE.SphereGeometry(6, 16, 16),
-        new THREE.ConeGeometry(5, 10, 16),
-        new THREE.TorusGeometry(6, 2, 16, 32)
+      const geometryTypes = [
+        { type: 'box', color: 0x3b82f6 },
+        { type: 'sphere', color: 0x10b981 },
+        { type: 'cone', color: 0x1e3a8a },
+        { type: 'torus', color: 0x8b5cf6 }
       ];
       
-      const materials = [
-        new THREE.MeshBasicMaterial({ color: 0x3b82f6, wireframe: true, transparent: true, opacity: 0.7 }),
-        new THREE.MeshBasicMaterial({ color: 0x10b981, wireframe: true, transparent: true, opacity: 0.7 }),
-        new THREE.MeshBasicMaterial({ color: 0x1e3a8a, wireframe: true, transparent: true, opacity: 0.7 })
-      ];
-      
-      // Create 10 shapes
-      for (let i = 0; i < 10; i++) {
-        const geometry = geometries[Math.floor(Math.random() * geometries.length)];
-        const material = materials[Math.floor(Math.random() * materials.length)];
+      // Create 50 shapes in a spherical formation
+      for (let i = 0; i < 50; i++) {
+        const type = geometryTypes[Math.floor(Math.random() * geometryTypes.length)];
+        let geometry;
+        
+        switch(type.type) {
+          case 'box':
+            geometry = new THREE.BoxGeometry(3, 3, 3);
+            break;
+          case 'sphere':
+            geometry = new THREE.SphereGeometry(2, 16, 16);
+            break;
+          case 'cone':
+            geometry = new THREE.ConeGeometry(2, 4, 16);
+            break;
+          case 'torus':
+            geometry = new THREE.TorusGeometry(2, 0.5, 16, 32);
+            break;
+        }
+        
+        const material = new THREE.MeshPhongMaterial({
+          color: type.color,
+          transparent: true,
+          opacity: 0.7,
+          shininess: 100,
+          specular: 0x111111
+        });
+        
         const shape = new THREE.Mesh(geometry, material);
         
-        shape.position.set(
-          (Math.random() - 0.5) * 200,
-          (Math.random() - 0.5) * 200,
-          (Math.random() - 0.5) * 200
-        );
+        // Position in a spherical formation
+        const radius = 100 + Math.random() * 50;
+        const theta = Math.random() * Math.PI * 2;
+        const phi = Math.random() * Math.PI;
+        
+        shape.position.x = radius * Math.sin(phi) * Math.cos(theta);
+        shape.position.y = radius * Math.sin(phi) * Math.sin(theta);
+        shape.position.z = radius * Math.cos(phi);
         
         shape.rotation.set(
           Math.random() * Math.PI,
           Math.random() * Math.PI,
-          0
+          Math.random() * Math.PI
         );
         
-        const scale = Math.random() * 0.5 + 0.5;
-        shape.scale.set(scale, scale, scale);
+        // Random movement properties
+        shape.userData = {
+          speed: 0.1 + Math.random() * 0.3,
+          rotationSpeed: new THREE.Vector3(
+            Math.random() * 0.02 - 0.01,
+            Math.random() * 0.02 - 0.01,
+            Math.random() * 0.02 - 0.01
+          )
+        };
         
         shapes.push(shape);
         scene.add(shape);
       }
       
+      // Add lights
+      const ambientLight = new THREE.AmbientLight(0x404040);
+      scene.add(ambientLight);
+      
+      const directionalLight = new THREE.DirectionalLight(0xffffff, 0.8);
+      directionalLight.position.set(1, 1, 1);
+      scene.add(directionalLight);
+      
+      const pointLight = new THREE.PointLight(0x3b82f6, 1, 200);
+      pointLight.position.set(50, 50, 50);
+      scene.add(pointLight);
+      
+      const pointLight2 = new THREE.PointLight(0x10b981, 1, 200);
+      pointLight2.position.set(-50, -50, 50);
+      scene.add(pointLight2);
+      
       camera.position.z = 150;
       
-      // Mouse move interaction
+      // Mouse interaction
       const mouse = new THREE.Vector2();
       const target = new THREE.Vector2();
       const windowHalf = new THREE.Vector2(window.innerWidth / 2, window.innerHeight / 2);
@@ -789,23 +382,34 @@
         mouse.y = (e.clientY - windowHalf.y) / windowHalf.y;
       });
       
-      // Animate scene
+      // Animation loop
       function animate() {
         requestAnimationFrame(animate);
         
-        // Smoothly follow mouse
-        target.x = mouse.x * 20;
-        target.y = -mouse.y * 20;
+        // Smooth camera follow
+        target.x = mouse.x * 30;
+        target.y = -mouse.y * 30;
+        
         camera.position.x += (target.x - camera.position.x) * 0.05;
         camera.position.y += (target.y - camera.position.y) * 0.05;
         camera.lookAt(scene.position);
         
-        // Rotate shapes
+        // Animate shapes
         shapes.forEach(shape => {
-          shape.rotation.x += 0.01;
-          shape.rotation.y += 0.01;
-          shape.rotation.z += 0.005;
+          // Rotate
+          shape.rotation.x += shape.userData.rotationSpeed.x;
+          shape.rotation.y += shape.userData.rotationSpeed.y;
+          shape.rotation.z += shape.userData.rotationSpeed.z;
+          
+          // Move in small circles
+          shape.position.x += Math.sin(Date.now() * 0.001 * shape.userData.speed) * 0.1;
+          shape.position.y += Math.cos(Date.now() * 0.001 * shape.userData.speed) * 0.1;
+          shape.position.z += Math.sin(Date.now() * 0.001 * shape.userData.speed) * 0.1;
         });
+        
+        // Make lights follow mouse slightly
+        pointLight.position.x = mouse.x * 50 + 50;
+        pointLight.position.y = -mouse.y * 50 + 50;
         
         renderer.render(scene, camera);
       }
@@ -820,86 +424,45 @@
       });
     }
     
-    // Animate elements on scroll
-    function animateOnScroll() {
-      const elements = document.querySelectorAll('.animate-on-scroll');
+    // Initialize Three.js
+    document.addEventListener('DOMContentLoaded', () => {
+      initThreeJS();
       
-      elements.forEach((element, index) => {
-        const elementPosition = element.getBoundingClientRect().top;
-        const windowHeight = window.innerHeight;
-        
-        if (elementPosition < windowHeight - 250) {
-          setTimeout(() => {
-            element.classList.add('visible');
-            element.style.transitionDelay = `${index * 0.3}s`;
-          }, 200);
-        }
-      });
-    }
-    
-    // Animate progress bars
-    function animateProgressBars() {
-      const progressBars = document.querySelectorAll('.skill-progress');
-      
-      progressBars.forEach((bar, index) => {
-        const barPosition = bar.getBoundingClientRect().top;
-        const windowHeight = window.innerHeight;
-        
-        if (barPosition < windowHeight - 250) {
-          setTimeout(() => {
-            bar.classList.add('visible');
-            const barInner = bar.querySelector('.skill-progress-bar');
-            const value = barInner.getAttribute('data-value');
-            barInner.style.width = `${value}%`;
-          }, index * 600);
-        }
-      });
-    }
-    
-    // Interactive light effect
-    function setupInteractiveLight() {
-      const light = document.getElementById('interactive-light');
-      
-      document.addEventListener('mousemove', (e) => {
-        light.style.left = `${e.clientX - 150}px`;
-        light.style.top = `${e.clientY - 150}px`;
-      });
-    }
-    
-    // Interactive card effects
-    function setupInteractiveCards() {
-      const cards = document.querySelectorAll('.card');
-      
-      cards.forEach(card => {
-        card.addEventListener('mousemove', (e) => {
-          const rect = card.getBoundingClientRect();
-          const x = e.clientX - rect.left;
-          const y = e.clientY - rect.top;
-          
-          const rotateX = (y / rect.height - 0.5) * 20;
-          const rotateY = (x / rect.width - 0.5) * 20;
-          
-          card.style.transform = `translateY(-30px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) translateZ(100px)`;
+      // Animate progress bars on scroll
+      const animateProgressBars = () => {
+        document.querySelectorAll('.progress-bar').forEach(bar => {
+          const rect = bar.getBoundingClientRect();
+          if (rect.top < window.innerHeight - 100) {
+            const width = bar.getAttribute('data-width');
+            bar.style.width = width;
+          }
         });
-        
-        card.addEventListener('mouseleave', () => {
-          card.style.transform = 'translateY(0) rotateX(0deg) rotateY(0deg) translateZ(40px)';
-        });
-      });
-    }
-    
-    // Setup controls
-    function setupControls() {
-      const effectToggle = document.getElementById('effect-toggle');
+      };
+      
+      // Initial check
+      animateProgressBars();
+      
+      // Check on scroll
+      window.addEventListener('scroll', animateProgressBars);
+      
+      // Theme toggle
       const themeToggle = document.getElementById('theme-toggle');
-      
-      let effectsEnabled = true;
       let themeIndex = 0;
       const themes = [
-        { name: 'blue', gradient: 'linear-gradient(135deg, #1e3a8a, #3b82f6, #60a5fa)' },
-        { name: 'green', gradient: 'linear-gradient(135deg, #065f46, #059669, #34d399)' },
-        { name: 'purple', gradient: 'linear-gradient(135deg, #5b21b6, #8b5cf6, #c4b5fd)' }
+        { bg: 'bg-gradient-to-br from-blue-900 via-blue-600 to-blue-300', text: 'text-blue-900' },
+        { bg: 'bg-gradient-to-br from-emerald-900 via-emerald-600 to-emerald-300', text: 'text-emerald-900' },
+        { bg: 'bg-gradient-to-br from-purple-900 via-purple-600 to-purple-300', text: 'text-purple-900' },
+        { bg: 'bg-gradient-to-br from-amber-900 via-amber-600 to-amber-300', text: 'text-amber-900' }
       ];
+      
+      themeToggle.addEventListener('click', () => {
+        themeIndex = (themeIndex + 1) % themes.length;
+        document.body.className = `font-sans ${themes[themeIndex].bg} min-h-screen ${themes[themeIndex].text}`;
+      });
+      
+      // Effect toggle
+      const effectToggle = document.getElementById('effect-toggle');
+      let effectsEnabled = true;
       
       effectToggle.addEventListener('click', () => {
         effectsEnabled = !effectsEnabled;
@@ -907,36 +470,36 @@
         effectToggle.innerHTML = effectsEnabled ? '<i class="fas fa-magic"></i>' : '<i class="fas fa-ban"></i>';
       });
       
-      themeToggle.addEventListener('click', () => {
-        themeIndex = (themeIndex + 1) % themes.length;
-        document.body.style.background = themes[themeIndex].gradient;
+      // 3D hover effects for cards
+      document.querySelectorAll('.three-d-element').forEach(element => {
+        element.addEventListener('mousemove', (e) => {
+          if (!effectsEnabled) return;
+          
+          const rect = element.getBoundingClientRect();
+          const x = e.clientX - rect.left;
+          const y = e.clientY - rect.top;
+          
+          const centerX = rect.width / 2;
+          const centerY = rect.height / 2;
+          
+          const rotateX = ((y - centerY) / centerY) * 10;
+          const rotateY = ((centerX - x) / centerX) * 10;
+          
+          element.style.transform = `rotateX(${rotateX}deg) rotateY(${rotateY}deg) translateZ(20px)`;
+        });
+        
+        element.addEventListener('mouseleave', () => {
+          element.style.transform = '';
+        });
       });
-    }
-    
-    // Initialize everything
-    document.addEventListener('DOMContentLoaded', () => {
-      animateOnScroll();
-      animateProgressBars();
-      initThreeJS();
-      setupInteractiveLight();
-      setupInteractiveCards();
-      setupControls();
       
-      // Animate background gradient
-      document.body.animate([
-        { backgroundPosition: '0% 0%' },
-        { backgroundPosition: '100% 100%' }
-      ], {
-        duration: 10000,
-        iterations: Infinity,
-        direction: 'alternate',
-        easing: 'ease-in-out'
-      });
-    });
-    
-    window.addEventListener('scroll', () => {
-      animateOnScroll();
-      animateProgressBars();
+      // Floating animation for profile image
+      const profileImg = document.querySelector('.floating');
+      if (profileImg) {
+        setInterval(() => {
+          profileImg.style.transform = `translateY(${Math.sin(Date.now() / 1000) * 10}px) rotate(${Math.sin(Date.now() / 1200) * 5}deg)`;
+        }, 50);
+      }
     });
   </script>
 </body>
