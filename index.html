@@ -499,6 +499,40 @@
               </a>
             </div>
           </div>
+          
+          <div>
+            <h3 class="text-xl md:text-2xl font-bold text-white mb-6 md:mb-8">Send Me a Message</h3>
+            <form id="contact-form" class="space-y-4 md:space-y-6">
+              <div>
+                <label for="name" class="block text-gray-400 mb-1 md:mb-2 text-sm md:text-base">Your Name *</label>
+                <input type="text" id="name" name="name" required class="w-full bg-gray-900 bg-opacity-50 border border-gray-700 rounded-lg px-3 py-2 md:px-4 md:py-3 text-white focus:outline-none focus:ring-2 focus:ring-amber-500 focus:border-transparent transition-all duration-300 text-sm md:text-base">
+                <p id="name-error" class="text-red-500 text-xs mt-1 hidden">Please enter your name</p>
+              </div>
+              <div>
+                <label for="email" class="block text-gray-400 mb-1 md:mb-2 text-sm md:text-base">Email Address *</label>
+                <input type="email" id="email" name="email" required class="w-full bg-gray-900 bg-opacity-50 border border-gray-700 rounded-lg px-3 py-2 md:px-4 md:py-3 text-white focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all duration-300 text-sm md:text-base">
+                <p id="email-error" class="text-red-500 text-xs mt-1 hidden">Please enter a valid email address</p>
+              </div>
+              <div>
+                <label for="message" class="block text-gray-400 mb-1 md:mb-2 text-sm md:text-base">Message *</label>
+                <textarea id="message" name="message" rows="4" required class="w-full bg-gray-900 bg-opacity-50 border border-gray-700 rounded-lg px-3 py-2 md:px-4 md:py-3 text-white focus:outline-none focus:ring-2 focus:ring-amber-500 focus:border-transparent transition-all duration-300 text-sm md:text-base"></textarea>
+                <p id="message-error" class="text-red-500 text-xs mt-1 hidden">Please enter your message</p>
+              </div>
+              <button type="submit" id="submit-btn" class="px-6 py-2 md:px-8 md:py-3 bg-gradient-to-r from-amber-600 to-amber-800 rounded-full font-medium text-white shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 hover:scale-105 w-full text-sm md:text-base flex items-center justify-center">
+                <span id="submit-text">Send Message</span>
+                <svg id="submit-spinner" class="animate-spin -mr-1 ml-3 h-5 w-5 text-white hidden" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                  <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                  <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                </svg>
+              </button>
+              <div id="form-success" class="hidden p-4 mb-4 text-sm text-green-700 bg-green-100 rounded-lg">
+                <i class="fas fa-check-circle mr-2"></i> Your message has been sent successfully! I'll get back to you soon.
+              </div>
+              <div id="form-error" class="hidden p-4 mb-4 text-sm text-red-700 bg-red-100 rounded-lg">
+                <i class="fas fa-exclamation-circle mr-2"></i> There was an error sending your message. Please try again later or contact me directly at marshadahamedh@gmail.com.
+              </div>
+            </form>
+          </div>
         </div>
       </div>
     </div>
@@ -856,6 +890,88 @@
             profileImg.style.transform = `translateY(${Math.sin(Date.now() / 1000) * 10}px) rotate(${Math.sin(Date.now() / 1200) * 5}deg)`;
           }
         }, 50);
+      }
+
+      // Contact Form Handling
+      const contactForm = document.getElementById('contact-form');
+      const submitBtn = document.getElementById('submit-btn');
+      const submitText = document.getElementById('submit-text');
+      const submitSpinner = document.getElementById('submit-spinner');
+      const formSuccess = document.getElementById('form-success');
+      const formError = document.getElementById('form-error');
+
+      if (contactForm) {
+        contactForm.addEventListener('submit', async (e) => {
+          e.preventDefault();
+          
+          // Reset error messages
+          document.querySelectorAll('[id$="-error"]').forEach(el => el.classList.add('hidden'));
+          formSuccess.classList.add('hidden');
+          formError.classList.add('hidden');
+          
+          // Validate form
+          let isValid = true;
+          const name = document.getElementById('name').value.trim();
+          const email = document.getElementById('email').value.trim();
+          const message = document.getElementById('message').value.trim();
+          
+          if (!name) {
+            document.getElementById('name-error').classList.remove('hidden');
+            isValid = false;
+          }
+          
+          if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+            document.getElementById('email-error').classList.remove('hidden');
+            isValid = false;
+          }
+          
+          if (!message) {
+            document.getElementById('message-error').classList.remove('hidden');
+            isValid = false;
+          }
+          
+          if (!isValid) return;
+          
+          // Show loading state
+          submitBtn.disabled = true;
+          submitText.textContent = 'Sending...';
+          submitSpinner.classList.remove('hidden');
+          
+          try {
+            // Using FormSubmit.co service (free form submission service)
+            const formData = new FormData(contactForm);
+            const response = await fetch('https://formsubmit.co/ajax/marshadahamedh@gmail.com', {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json'
+              },
+              body: JSON.stringify({
+                name: formData.get('name'),
+                email: formData.get('email'),
+                message: formData.get('message')
+              })
+            });
+            
+            const result = await response.json();
+            
+            if (result.success) {
+              // Show success message
+              formSuccess.classList.remove('hidden');
+              contactForm.reset();
+            } else {
+              throw new Error('Form submission failed');
+            }
+          } catch (error) {
+            console.error('Error submitting form:', error);
+            formError.classList.remove('hidden');
+          } finally {
+            // Reset button state
+            submitBtn.disabled = false;
+            submitText.textContent = 'Send Message';
+            submitSpinner.classList.add('hidden');
+          }
+        });
       }
       
       // Cleanup on page unload
