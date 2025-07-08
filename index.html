@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Marshad Ahamed - Premium 3D Portfolio</title>
+  <title>Marshad Ahamed - Responsive Portfolio</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800;900&family=Playfair+Display:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
@@ -11,12 +11,21 @@
   <script src="https://cdn.jsdelivr.net/npm/gsap@3.11.4/dist/gsap.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/three@0.132.2/examples/js/controls/OrbitControls.min.js"></script>
   <style>
+    :root {
+      --gold-primary: #D4AF37;
+      --gold-secondary: #AD8A56;
+      --purple-primary: #6554C0;
+      --purple-secondary: #9575CD;
+      --dark-bg: #0a0a0a;
+    }
+    
     body {
       font-family: 'Montserrat', sans-serif;
       perspective: 1000px;
       transform-style: preserve-3d;
       overflow-x: hidden;
-      background-color: #0a0a0a;
+      background-color: var(--dark-bg);
+      color: #f8f8f8;
     }
     
     .serif-font {
@@ -69,25 +78,20 @@
                    6px 6px 8px rgba(0,0,0,0.05);
     }
     
-    .parallax-layer {
-      transform-style: preserve-3d;
-      will-change: transform;
-    }
-    
     .gold-gradient {
-      background: linear-gradient(135deg, #AD8A56 0%, #D4AF37 50%, #F5D98D 100%);
+      background: linear-gradient(135deg, var(--gold-secondary) 0%, var(--gold-primary) 50%, #F5D98D 100%);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
     }
     
     .purple-gradient {
-      background: linear-gradient(135deg, #6554C0 0%, #9575CD 50%, #B39DDB 100%);
+      background: linear-gradient(135deg, var(--purple-primary) 0%, var(--purple-secondary) 50%, #B39DDB 100%);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
     }
     
     .gold-border {
-      border-image: linear-gradient(135deg, #AD8A56 0%, #D4AF37 50%, #F5D98D 100%);
+      border-image: linear-gradient(135deg, var(--gold-secondary) 0%, var(--gold-primary) 50%, #F5D98D 100%);
       border-image-slice: 1;
     }
     
@@ -124,19 +128,19 @@
     }
     
     .progress-bar-gold {
-      background: linear-gradient(90deg, #AD8A56 0%, #D4AF37 100%);
+      background: linear-gradient(90deg, var(--gold-secondary) 0%, var(--gold-primary) 100%);
       height: 6px;
       border-radius: 3px;
     }
     
     .progress-bar-purple {
-      background: linear-gradient(90deg, #6554C0 0%, #9575CD 100%);
+      background: linear-gradient(90deg, var(--purple-primary) 0%, var(--purple-secondary) 100%);
       height: 6px;
       border-radius: 3px;
     }
     
     .soft-skill-icon {
-      background: linear-gradient(135deg, #AD8A56 0%, #6554C0 100%);
+      background: linear-gradient(135deg, var(--gold-secondary) 0%, var(--purple-primary) 100%);
       box-shadow: 0 4px 15px rgba(101, 84, 192, 0.3);
     }
     
@@ -153,7 +157,7 @@
     }
     
     .floating-control {
-      background: linear-gradient(135deg, #AD8A56 0%, #6554C0 100%);
+      background: linear-gradient(135deg, var(--gold-secondary) 0%, var(--purple-primary) 100%);
       box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
       transition: all 0.3s ease;
     }
@@ -174,7 +178,7 @@
       left: 0;
       width: 0;
       height: 2px;
-      background: linear-gradient(90deg, #AD8A56 0%, #6554C0 100%);
+      background: linear-gradient(90deg, var(--gold-secondary) 0%, var(--purple-primary) 100%);
       transition: width 0.3s ease;
     }
     
@@ -191,6 +195,60 @@
     .pulse-animation {
       animation: pulse 3s infinite;
     }
+    
+    /* Mobile Menu */
+    .mobile-menu {
+      transform: translateX(100%);
+      transition: transform 0.3s ease-out;
+    }
+    
+    .mobile-menu.open {
+      transform: translateX(0);
+    }
+    
+    /* Responsive adjustments */
+    @media (max-width: 768px) {
+      .premium-card {
+        padding: 1.5rem;
+      }
+      
+      .profile-img {
+        width: 180px;
+        height: 180px;
+      }
+      
+      h1 {
+        font-size: 2.5rem;
+      }
+      
+      .section-title {
+        font-size: 2rem;
+      }
+      
+      .soft-skill-icon {
+        width: 50px;
+        height: 50px;
+        font-size: 1.5rem;
+      }
+      
+      .project-card {
+        flex-direction: column;
+      }
+      
+      .project-card > div {
+        width: 100% !important;
+      }
+    }
+    
+    @media (min-width: 1024px) {
+      .container {
+        max-width: 1200px;
+      }
+      
+      .premium-card {
+        padding: 3rem;
+      }
+    }
   </style>
 </head>
 <body class="min-h-screen text-gray-100">
@@ -204,87 +262,100 @@
   </div>
   
   <!-- Navigation -->
-  <nav class="fixed top-0 left-0 right-0 z-50 py-4 px-8 backdrop-blur-md bg-black bg-opacity-30 border-b border-gray-800">
+  <nav class="fixed top-0 left-0 right-0 z-50 py-4 px-6 backdrop-blur-md bg-black bg-opacity-30 border-b border-gray-800">
     <div class="container mx-auto flex justify-between items-center">
-      <div class="text-2xl font-bold gold-gradient serif-font">Marshad</div>
+      <div class="text-2xl font-bold gold-gradient serif-font">Marshad Ahamed</div>
       <div class="hidden md:flex space-x-8">
         <a href="#about" class="nav-link text-gray-300 hover:text-white transition-colors duration-300">About</a>
         <a href="#skills" class="nav-link text-gray-300 hover:text-white transition-colors duration-300">Skills</a>
         <a href="#projects" class="nav-link text-gray-300 hover:text-white transition-colors duration-300">Projects</a>
         <a href="#contact" class="nav-link text-gray-300 hover:text-white transition-colors duration-300">Contact</a>
       </div>
-      <button class="md:hidden text-gray-300 hover:text-white">
+      <button id="mobile-menu-button" class="md:hidden text-gray-300 hover:text-white focus:outline-none">
         <i class="fas fa-bars text-2xl"></i>
       </button>
     </div>
   </nav>
   
+  <!-- Mobile Menu -->
+  <div id="mobile-menu" class="mobile-menu fixed inset-0 z-40 bg-black bg-opacity-90 backdrop-blur-lg pt-20 px-6 md:hidden">
+    <div class="flex flex-col space-y-8 text-center">
+      <a href="#about" class="text-2xl text-gray-300 hover:text-white transition-colors duration-300 py-2">About</a>
+      <a href="#skills" class="text-2xl text-gray-300 hover:text-white transition-colors duration-300 py-2">Skills</a>
+      <a href="#projects" class="text-2xl text-gray-300 hover:text-white transition-colors duration-300 py-2">Projects</a>
+      <a href="#contact" class="text-2xl text-gray-300 hover:text-white transition-colors duration-300 py-2">Contact</a>
+    </div>
+    <button id="mobile-menu-close" class="absolute top-6 right-6 text-gray-300 hover:text-white text-2xl">
+      <i class="fas fa-times"></i>
+    </button>
+  </div>
+  
   <!-- Main Content -->
-  <div class="container mx-auto px-4 py-32 relative z-10 three-d-container">
+  <div class="container mx-auto px-4 py-24 md:py-32 relative z-10 three-d-container">
     <div class="max-w-6xl mx-auto">
       <!-- Profile Header -->
-      <div id="about" class="premium-card rounded-3xl p-10 mb-20 three-d-element hover:rotate-x-6 hover:rotate-y-3 hover:translate-z-20 transition-transform duration-500">
-        <div class="text-center mb-12">
+      <div id="about" class="premium-card rounded-2xl md:rounded-3xl p-6 md:p-10 mb-12 md:mb-20 three-d-element hover:rotate-x-6 hover:rotate-y-3 hover:translate-z-20 transition-transform duration-500">
+        <div class="text-center mb-8 md:mb-12">
           <div class="relative inline-block floating pulse-animation">
-            <img src="marshad.jpg" alt="Marshad Ahamed" class="w-56 h-56 md:w-64 md:h-64 rounded-full border-4 border-opacity-30 border-white shadow-2xl glow transform transition-transform duration-500 hover:scale-110 hover:rotate-y-12">
+            <img src="marshad.jpg" alt="Marshad Ahamed" class="w-48 h-48 md:w-64 md:h-64 rounded-full border-4 border-opacity-30 border-white shadow-2xl glow transform transition-transform duration-500 hover:scale-110 hover:rotate-y-12">
             <div class="absolute inset-0 rounded-full border-4 border-transparent animate-spin-slow" style="border-top-color: rgba(173, 138, 86, 0.7); border-right-color: rgba(101, 84, 192, 0.5);"></div>
           </div>
         </div>
-        <h1 class="text-5xl md:text-6xl font-bold text-center mb-8 gold-gradient serif-font">Marshad Ahamed</h1>
-        <h2 class="text-xl md:text-2xl text-center mb-12 purple-gradient font-medium">Undergraduate | Cybersecurity Enthusiast</h2>
+        <h1 class="text-3xl md:text-5xl lg:text-6xl font-bold text-center mb-6 md:mb-8 gold-gradient serif-font">Marshad Ahamed</h1>
+        <h2 class="text-lg md:text-xl lg:text-2xl text-center mb-8 md:mb-12 purple-gradient font-medium">Undergraduate | Cybersecurity Enthusiast</h2>
         
-        <div class="text-lg text-gray-300 leading-relaxed space-y-6 max-w-3xl mx-auto">
+        <div class="text-base md:text-lg text-gray-300 leading-relaxed space-y-4 md:space-y-6 max-w-3xl mx-auto">
           <p>I'm Marshad Ahamed Majeed, an ambitious undergraduate student at SLIIT, currently pursuing my degree in Information Technology with a growing passion for cybersecurity. My journey in programming began with Java, and I've since developed a keen interest in creating secure, efficient systems.</p>
           <p>Beyond the digital realm, I'm an avid football player, a coffee connoisseur, and a perpetual learner always seeking new challenges. My approach combines technical skill with creative problem-solving to deliver innovative solutions.</p>
         </div>
         
-        <div class="flex justify-center mt-12 space-x-6">
-          <a href="#contact" class="px-8 py-3 bg-gradient-to-r from-amber-600 to-amber-800 rounded-full font-medium text-white shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 hover:scale-105">
+        <div class="flex flex-col sm:flex-row justify-center mt-8 md:mt-12 gap-4 md:gap-6">
+          <a href="#contact" class="px-6 py-2 md:px-8 md:py-3 bg-gradient-to-r from-amber-600 to-amber-800 rounded-full font-medium text-white shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 hover:scale-105 text-center">
             Contact Me
           </a>
-          <a href="#projects" class="px-8 py-3 bg-gradient-to-r from-purple-600 to-purple-800 rounded-full font-medium text-white shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 hover:scale-105">
+          <a href="#projects" class="px-6 py-2 md:px-8 md:py-3 bg-gradient-to-r from-purple-600 to-purple-800 rounded-full font-medium text-white shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 hover:scale-105 text-center">
             View Projects
           </a>
         </div>
       </div>
       
       <!-- Technical Skills -->
-      <div id="skills" class="premium-card rounded-3xl p-10 mb-20 three-d-element hover:rotate-x-3 hover:rotate-y-3 hover:translate-z-10 transition-transform duration-500">
-        <h2 class="text-4xl font-bold mb-12 gold-gradient serif-font text-center">Technical Skills</h2>
+      <div id="skills" class="premium-card rounded-2xl md:rounded-3xl p-6 md:p-10 mb-12 md:mb-20 three-d-element hover:rotate-x-3 hover:rotate-y-3 hover:translate-z-10 transition-transform duration-500">
+        <h2 class="text-3xl md:text-4xl font-bold mb-8 md:mb-12 gold-gradient serif-font text-center">Technical Skills</h2>
         
-        <div class="flex flex-wrap justify-center gap-4 mb-12">
-          <span class="skill-pill px-8 py-3 rounded-full font-medium text-gray-200 shadow-lg">Java</span>
-          <span class="skill-pill px-8 py-3 rounded-full font-medium text-gray-200 shadow-lg">OOP</span>
-          <span class="skill-pill px-8 py-3 rounded-full font-medium text-gray-200 shadow-lg">Fundamentals of Networking</span>
+        <div class="flex flex-wrap justify-center gap-3 md:gap-4 mb-8 md:mb-12">
+          <span class="skill-pill px-4 py-2 md:px-6 md:py-3 rounded-full font-medium text-gray-200 shadow-lg text-sm md:text-base">Java</span>
+          <span class="skill-pill px-4 py-2 md:px-6 md:py-3 rounded-full font-medium text-gray-200 shadow-lg text-sm md:text-base">OOP</span>
+          <span class="skill-pill px-4 py-2 md:px-6 md:py-3 rounded-full font-medium text-gray-200 shadow-lg text-sm md:text-base">Fundamentals of Networking</span>
         </div>
         
-        <div class="space-y-8 max-w-3xl mx-auto">
+        <div class="space-y-6 md:space-y-8 max-w-3xl mx-auto">
           <div>
-            <div class="flex justify-between mb-3">
-              <span class="font-medium text-gray-300">Java Programming</span>
-              <span class="font-bold text-amber-500">60%</span>
+            <div class="flex justify-between mb-2 md:mb-3">
+              <span class="font-medium text-gray-300 text-sm md:text-base">Java Programming</span>
+              <span class="font-bold text-amber-500 text-sm md:text-base">55%</span>
             </div>
-            <div class="h-2 bg-gray-800 rounded-full overflow-hidden">
-              <div class="progress-bar-gold progress-bar" data-width="60%" style="width: 0%"></div>
+            <div class="h-1 md:h-2 bg-gray-800 rounded-full overflow-hidden">
+              <div class="progress-bar-gold progress-bar" data-width="55%" style="width: 0%"></div>
             </div>
           </div>
           
           <div>
-            <div class="flex justify-between mb-3">
-              <span class="font-medium text-gray-300">Web Development</span>
-              <span class="font-bold text-purple-400">30%</span>
+            <div class="flex justify-between mb-2 md:mb-3">
+              <span class="font-medium text-gray-300 text-sm md:text-base">Web Development</span>
+              <span class="font-bold text-purple-400 text-sm md:text-base">15%</span>
             </div>
-            <div class="h-2 bg-gray-800 rounded-full overflow-hidden">
-              <div class="progress-bar-purple progress-bar" data-width="30%" style="width: 0%"></div>
+            <div class="h-1 md:h-2 bg-gray-800 rounded-full overflow-hidden">
+              <div class="progress-bar-purple progress-bar" data-width="15%" style="width: 0%"></div>
             </div>
           </div>
           
           <div>
-            <div class="flex justify-between mb-3">
-              <span class="font-medium text-gray-300">Network Concepts</span>
-              <span class="font-bold text-amber-500">20%</span>
+            <div class="flex justify-between mb-2 md:mb-3">
+              <span class="font-medium text-gray-300 text-sm md:text-base">Network Concepts</span>
+              <span class="font-bold text-amber-500 text-sm md:text-base">20%</span>
             </div>
-            <div class="h-2 bg-gray-800 rounded-full overflow-hidden">
+            <div class="h-1 md:h-2 bg-gray-800 rounded-full overflow-hidden">
               <div class="progress-bar-gold progress-bar" data-width="20%" style="width: 0%"></div>
             </div>
           </div>
@@ -292,96 +363,98 @@
       </div>
       
       <!-- Soft Skills -->
-      <div class="premium-card rounded-3xl p-10 mb-20 three-d-element hover:rotate-x-3 hover:rotate-y-3 hover:translate-z-10 transition-transform duration-500">
-        <h2 class="text-4xl font-bold mb-12 purple-gradient serif-font text-center">Core Competencies</h2>
-        <div class="grid md:grid-cols-2 gap-8">
-          <div class="project-card p-8 rounded-2xl hover:shadow-lg transition-all duration-300 transform hover:-translate-y-2 hover:rotate-y-3">
-            <div class="flex items-center mb-6">
-              <div class="soft-skill-icon w-20 h-20 rounded-full flex items-center justify-center text-white text-3xl mr-6">
+      <div class="premium-card rounded-2xl md:rounded-3xl p-6 md:p-10 mb-12 md:mb-20 three-d-element hover:rotate-x-3 hover:rotate-y-3 hover:translate-z-10 transition-transform duration-500">
+        <h2 class="text-3xl md:text-4xl font-bold mb-8 md:mb-12 purple-gradient serif-font text-center">Core Competencies</h2>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-8">
+          <div class="project-card p-4 md:p-6 lg:p-8 rounded-xl md:rounded-2xl hover:shadow-lg transition-all duration-300 transform hover:-translate-y-1 md:hover:-translate-y-2 hover:rotate-y-3">
+            <div class="flex items-center mb-4 md:mb-6">
+              <div class="soft-skill-icon w-12 h-12 md:w-16 md:h-16 lg:w-20 lg:h-20 rounded-full flex items-center justify-center text-white text-xl md:text-2xl lg:text-3xl mr-4 md:mr-6">
                 <i class="fas fa-brain"></i>
               </div>
-              <h3 class="text-2xl font-bold text-white">Critical Thinking</h3>
+              <h3 class="text-lg md:text-xl lg:text-2xl font-bold text-white">Critical Thinking</h3>
             </div>
-            <p class="text-gray-400">Systematically analyzing complex problems to develop innovative, effective solutions that address root causes.</p>
+            <p class="text-sm md:text-base text-gray-400">Systematically analyzing complex problems to develop innovative, effective solutions that address root causes.</p>
           </div>
           
-          <div class="project-card p-8 rounded-2xl hover:shadow-lg transition-all duration-300 transform hover:-translate-y-2 hover:rotate-y-3">
-            <div class="flex items-center mb-6">
-              <div class="soft-skill-icon w-20 h-20 rounded-full flex items-center justify-center text-white text-3xl mr-6">
+          <div class="project-card p-4 md:p-6 lg:p-8 rounded-xl md:rounded-2xl hover:shadow-lg transition-all duration-300 transform hover:-translate-y-1 md:hover:-translate-y-2 hover:rotate-y-3">
+            <div class="flex items-center mb-4 md:mb-6">
+              <div class="soft-skill-icon w-12 h-12 md:w-16 md:h-16 lg:w-20 lg:h-20 rounded-full flex items-center justify-center text-white text-xl md:text-2xl lg:text-3xl mr-4 md:mr-6">
                 <i class="fas fa-puzzle-piece"></i>
               </div>
-              <h3 class="text-2xl font-bold text-white">Problem Solving</h3>
+              <h3 class="text-lg md:text-xl lg:text-2xl font-bold text-white">Problem Solving</h3>
             </div>
-            <p class="text-gray-400">Identifying technical challenges and implementing strategic solutions with precision and efficiency.</p>
+            <p class="text-sm md:text-base text-gray-400">Identifying technical challenges and implementing strategic solutions with precision and efficiency.</p>
           </div>
           
-          <div class="project-card p-8 rounded-2xl hover:shadow-lg transition-all duration-300 transform hover:-translate-y-2 hover:rotate-y-3">
-            <div class="flex items-center mb-6">
-              <div class="soft-skill-icon w-20 h-20 rounded-full flex items-center justify-center text-white text-3xl mr-6">
+          <div class="project-card p-4 md:p-6 lg:p-8 rounded-xl md:rounded-2xl hover:shadow-lg transition-all duration-300 transform hover:-translate-y-1 md:hover:-translate-y-2 hover:rotate-y-3">
+            <div class="flex items-center mb-4 md:mb-6">
+              <div class="soft-skill-icon w-12 h-12 md:w-16 md:h-16 lg:w-20 lg:h-20 rounded-full flex items-center justify-center text-white text-xl md:text-2xl lg:text-3xl mr-4 md:mr-6">
                 <i class="fas fa-people-group"></i>
               </div>
-              <h3 class="text-2xl font-bold text-white">Team Collaboration</h3>
+              <h3 class="text-lg md:text-xl lg:text-2xl font-bold text-white">Team Collaboration</h3>
             </div>
-            <p class="text-gray-400">Working synergistically with diverse teams to achieve exceptional results through shared knowledge and mutual support.</p>
+            <p class="text-sm md:text-base text-gray-400">Working synergistically with diverse teams to achieve exceptional results through shared knowledge and mutual support.</p>
           </div>
           
-          <div class="project-card p-8 rounded-2xl hover:shadow-lg transition-all duration-300 transform hover:-translate-y-2 hover:rotate-y-3">
-            <div class="flex items-center mb-6">
-              <div class="soft-skill-icon w-20 h-20 rounded-full flex items-center justify-center text-white text-3xl mr-6">
+          <div class="project-card p-4 md:p-6 lg:p-8 rounded-xl md:rounded-2xl hover:shadow-lg transition-all duration-300 transform hover:-translate-y-1 md:hover:-translate-y-2 hover:rotate-y-3">
+            <div class="flex items-center mb-4 md:mb-6">
+              <div class="soft-skill-icon w-12 h-12 md:w-16 md:h-16 lg:w-20 lg:h-20 rounded-full flex items-center justify-center text-white text-xl md:text-2xl lg:text-3xl mr-4 md:mr-6">
                 <i class="fas fa-comments"></i>
               </div>
-              <h3 class="text-2xl font-bold text-white">Technical Communication</h3>
+              <h3 class="text-lg md:text-xl lg:text-2xl font-bold text-white">Technical Communication</h3>
             </div>
-            <p class="text-gray-400">Articulating complex technical concepts with clarity to both technical and non-technical stakeholders.</p>
+            <p class="text-sm md:text-base text-gray-400">Articulating complex technical concepts with clarity to both technical and non-technical stakeholders.</p>
           </div>
         </div>
       </div>
       
       <!-- Projects -->
-      <div id="projects" class="premium-card rounded-3xl p-10 mb-20 three-d-element hover:rotate-x-3 hover:rotate-y-3 hover:translate-z-10 transition-transform duration-500">
-        <h2 class="text-4xl font-bold mb-12 gold-gradient serif-font text-center">Featured Projects</h2>
+      <div id="projects" class="premium-card rounded-2xl md:rounded-3xl p-6 md:p-10 mb-12 md:mb-20 three-d-element hover:rotate-x-3 hover:rotate-y-3 hover:translate-z-10 transition-transform duration-500">
+        <h2 class="text-3xl md:text-4xl font-bold mb-8 md:mb-12 gold-gradient serif-font text-center">Featured Projects</h2>
         
-        <div class="space-y-10">
-          <div class="project-card p-8 rounded-2xl transition-all duration-300 transform hover:-translate-y-1 hover:rotate-y-2">
-            <div class="flex flex-col md:flex-row gap-8">
+        <div class="space-y-6 md:space-y-10">
+          <div class="project-card p-4 md:p-6 lg:p-8 rounded-xl md:rounded-2xl transition-all duration-300 transform hover:-translate-y-1 hover:rotate-y-2">
+            <div class="flex flex-col md:flex-row gap-4 md:gap-6 lg:gap-8">
               <div class="md:w-1/3">
-                <div class="bg-gradient-to-br from-gray-900 to-gray-800 h-full rounded-xl overflow-hidden flex items-center justify-center p-6">
-                  <i class="fas fa-code text-6xl text-amber-500"></i>
+                <div class="bg-gradient-to-br from-gray-900 to-gray-800 h-full rounded-lg md:rounded-xl overflow-hidden flex items-center justify-center p-4 md:p-6">
+                  <i class="fas fa-code text-4xl md:text-5xl lg:text-6xl text-amber-500"></i>
                 </div>
               </div>
               <div class="md:w-2/3">
-                <h3 class="text-2xl font-bold text-white mb-4 relative inline-block">
+                <h3 class="text-xl md:text-2xl font-bold text-white mb-2 md:mb-4 relative inline-block">
                   <span class="relative z-10">Student Management System</span>
-                  <span class="absolute bottom-0 left-0 w-full h-1 bg-gradient-to-r from-amber-500 to-purple-600 opacity-50 rounded-full -z-1"></span>
+                  <span class="absolute bottom-0 left-0 w-full h-0.5 md:h-1 bg-gradient-to-r from-amber-500 to-purple-600 opacity-50 rounded-full -z-1"></span>
                 </h3>
-                <p class="text-gray-400 mb-6">A comprehensive Java console application for managing student records, grades, and course information with secure data handling and efficient querying capabilities.</p>
-                <div class="flex flex-wrap gap-3 mb-6">
-                  <span class="px-4 py-1 bg-gray-800 text-amber-400 rounded-full text-sm font-medium">Java</span>
-                  <span class="px-4 py-1 bg-gray-800 text-amber-400 rounded-full text-sm font-medium">OOP</span>
+                <p class="text-sm md:text-base text-gray-400 mb-4 md:mb-6">A comprehensive Java console application for managing student records, grades, and course information with secure data handling and efficient querying capabilities.</p>
+                <div class="flex flex-wrap gap-2 md:gap-3 mb-4 md:mb-6">
+                  <span class="px-3 py-1 md:px-4 md:py-1 bg-gray-800 text-amber-400 rounded-full text-xs md:text-sm font-medium">Java</span>
+                  <span class="px-3 py-1 md:px-4 md:py-1 bg-gray-800 text-amber-400 rounded-full text-xs md:text-sm font-medium">OOP</span>
+                  <span class="px-3 py-1 md:px-4 md:py-1 bg-gray-800 text-amber-400 rounded-full text-xs md:text-sm font-medium">File I/O</span>
                 </div>
               </div>
             </div>
           </div>
           
-          <div class="project-card p-8 rounded-2xl transition-all duration-300 transform hover:-translate-y-1 hover:rotate-y-2">
-            <div class="flex flex-col md:flex-row gap-8">
+          <div class="project-card p-4 md:p-6 lg:p-8 rounded-xl md:rounded-2xl transition-all duration-300 transform hover:-translate-y-1 hover:rotate-y-2">
+            <div class="flex flex-col md:flex-row gap-4 md:gap-6 lg:gap-8">
               <div class="md:w-1/3">
-                <div class="bg-gradient-to-br from-gray-900 to-gray-800 h-full rounded-xl overflow-hidden flex items-center justify-center p-6">
-                  <i class="fas fa-globe text-6xl text-purple-500"></i>
+                <div class="bg-gradient-to-br from-gray-900 to-gray-800 h-full rounded-lg md:rounded-xl overflow-hidden flex items-center justify-center p-4 md:p-6">
+                  <i class="fas fa-globe text-4xl md:text-5xl lg:text-6xl text-purple-500"></i>
                 </div>
               </div>
               <div class="md:w-2/3">
-                <h3 class="text-2xl font-bold text-white mb-4 relative inline-block">
+                <h3 class="text-xl md:text-2xl font-bold text-white mb-2 md:mb-4 relative inline-block">
                   <span class="relative z-10">Interactive Portfolio Website</span>
-                  <span class="absolute bottom-0 left-0 w-full h-1 bg-gradient-to-r from-purple-500 to-amber-600 opacity-50 rounded-full -z-1"></span>
+                  <span class="absolute bottom-0 left-0 w-full h-0.5 md:h-1 bg-gradient-to-r from-purple-500 to-amber-600 opacity-50 rounded-full -z-1"></span>
                 </h3>
-                <p class="text-gray-400 mb-6">An immersive 3D portfolio website showcasing my skills and projects, featuring interactive elements, smooth animations, and responsive design.</p>
-                <div class="flex flex-wrap gap-3 mb-6">
-                  <span class="px-4 py-1 bg-gray-800 text-purple-400 rounded-full text-sm font-medium">HTML/CSS</span>
-                  <span class="px-4 py-1 bg-gray-800 text-purple-400 rounded-full text-sm font-medium">JavaScript</span>
-                  <span class="px-4 py-1 bg-gray-800 text-purple-400 rounded-full text-sm font-medium">Three.js</span>
-                  <span class="px-4 py-1 bg-gray-800 text-purple-400 rounded-full text-sm font-medium">GSAP</span>
+                <p class="text-sm md:text-base text-gray-400 mb-4 md:mb-6">An immersive 3D portfolio website showcasing my skills and projects, featuring interactive elements, smooth animations, and responsive design.</p>
+                <div class="flex flex-wrap gap-2 md:gap-3 mb-4 md:mb-6">
+                  <span class="px-3 py-1 md:px-4 md:py-1 bg-gray-800 text-purple-400 rounded-full text-xs md:text-sm font-medium">HTML/CSS</span>
+                  <span class="px-3 py-1 md:px-4 md:py-1 bg-gray-800 text-purple-400 rounded-full text-xs md:text-sm font-medium">JavaScript</span>
+                  <span class="px-3 py-1 md:px-4 md:py-1 bg-gray-800 text-purple-400 rounded-full text-xs md:text-sm font-medium">Three.js</span>
+                  <span class="px-3 py-1 md:px-4 md:py-1 bg-gray-800 text-purple-400 rounded-full text-xs md:text-sm font-medium">GSAP</span>
                 </div>
+
               </div>
             </div>
           </div>
@@ -389,43 +462,42 @@
       </div>
       
       <!-- Contact -->
-      <div id="contact" class="premium-card rounded-3xl p-10 mb-20 three-d-element hover:rotate-x-3 hover:rotate-y-3 hover:translate-z-10 transition-transform duration-500">
-        <h2 class="text-4xl font-bold mb-12 purple-gradient serif-font text-center">Get In Touch</h2>
+      <div id="contact" class="premium-card rounded-2xl md:rounded-3xl p-6 md:p-10 mb-12 md:mb-20 three-d-element hover:rotate-x-3 hover:rotate-y-3 hover:translate-z-10 transition-transform duration-500">
+        <h2 class="text-3xl md:text-4xl font-bold mb-8 md:mb-12 purple-gradient serif-font text-center">Get In Touch</h2>
         
-        <div class="grid md:grid-cols-2 gap-12">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-12">
           <div>
-            <h3 class="text-2xl font-bold text-white mb-8">Contact Information</h3>
-            <div class="space-y-6 text-lg">
+            <h3 class="text-xl md:text-2xl font-bold text-white mb-6 md:mb-8">Contact Information</h3>
+            <div class="space-y-4 md:space-y-6 text-sm md:text-base lg:text-lg">
               <div class="flex items-center hover:text-amber-400 transition-colors duration-300 group">
-                <div class="w-14 h-14 bg-gradient-to-br from-amber-600 to-amber-800 rounded-full flex items-center justify-center text-white text-xl mr-6 shadow-lg group-hover:rotate-12 transition-transform duration-300">
+                <div class="w-10 h-10 md:w-12 md:h-12 lg:w-14 lg:h-14 bg-gradient-to-br from-amber-600 to-amber-800 rounded-full flex items-center justify-center text-white text-lg md:text-xl lg:text-xl mr-4 md:mr-6 shadow-lg group-hover:rotate-12 transition-transform duration-300">
                   <i class="fas fa-envelope"></i>
                 </div>
                 <span>marshadahamedh@gmail.com</span>
               </div>
               <div class="flex items-center hover:text-purple-400 transition-colors duration-300 group">
-                <div class="w-14 h-14 bg-gradient-to-br from-purple-600 to-purple-800 rounded-full flex items-center justify-center text-white text-xl mr-6 shadow-lg group-hover:rotate-12 transition-transform duration-300">
+                <div class="w-10 h-10 md:w-12 md:h-12 lg:w-14 lg:h-14 bg-gradient-to-br from-purple-600 to-purple-800 rounded-full flex items-center justify-center text-white text-lg md:text-xl lg:text-xl mr-4 md:mr-6 shadow-lg group-hover:rotate-12 transition-transform duration-300">
                   <i class="fas fa-phone"></i>
                 </div>
                 <span>+94 0766756648</span>
               </div>
               <div class="flex items-center hover:text-amber-400 transition-colors duration-300 group">
-                <div class="w-14 h-14 bg-gradient-to-br from-amber-600 to-amber-800 rounded-full flex items-center justify-center text-white text-xl mr-6 shadow-lg group-hover:rotate-12 transition-transform duration-300">
+                <div class="w-10 h-10 md:w-12 md:h-12 lg:w-14 lg:h-14 bg-gradient-to-br from-amber-600 to-amber-800 rounded-full flex items-center justify-center text-white text-lg md:text-xl lg:text-xl mr-4 md:mr-6 shadow-lg group-hover:rotate-12 transition-transform duration-300">
                   <i class="fas fa-map-marker-alt"></i>
                 </div>
                 <span>Weligama, Sri Lanka</span>
               </div>
             </div>
             
-            <h3 class="text-2xl font-bold text-white mt-12 mb-6">Connect With Me</h3>
-            <div class="flex space-x-6">
-              <a href="https://github.com/marshadmajeedh" target="_blank" class="w-14 h-14 bg-gradient-to-br from-gray-800 to-gray-900 rounded-full flex items-center justify-center text-white text-2xl shadow-lg hover:shadow-xl hover:scale-110 hover:text-amber-400 transition-all duration-300">
+            <h3 class="text-xl md:text-2xl font-bold text-white mt-8 md:mt-12 mb-4 md:mb-6">Connect With Me</h3>
+            <div class="flex space-x-4 md:space-x-6">
+              <a href="https://github.com/marshadmajeedh" target="_blank" class="w-10 h-10 md:w-12 md:h-12 lg:w-14 lg:h-14 bg-gradient-to-br from-gray-800 to-gray-900 rounded-full flex items-center justify-center text-white text-xl md:text-2xl shadow-lg hover:shadow-xl hover:scale-110 hover:text-amber-400 transition-all duration-300">
                 <i class="fab fa-github"></i>
               </a>
-              <a href="https://www.linkedin.com/in/marshad-ahamedh-92ba01317/" target="_blank" class="w-14 h-14 bg-gradient-to-br from-gray-800 to-gray-900 rounded-full flex items-center justify-center text-white text-2xl shadow-lg hover:shadow-xl hover:scale-110 hover:text-purple-400 transition-all duration-300">
+              <a href="https://www.linkedin.com/in/marshad-ahamedh-92ba01317/" target="_blank" class="w-10 h-10 md:w-12 md:h-12 lg:w-14 lg:h-14 bg-gradient-to-br from-gray-800 to-gray-900 rounded-full flex items-center justify-center text-white text-xl md:text-2xl shadow-lg hover:shadow-xl hover:scale-110 hover:text-purple-400 transition-all duration-300">
                 <i class="fab fa-linkedin-in"></i>
               </a>
             </div>
-          </div>
           </div>
         </div>
       </div>
@@ -433,26 +505,26 @@
   </div>
 
   <!-- Footer -->
-  <footer class="bg-black bg-opacity-50 py-8 border-t border-gray-800">
+  <footer class="bg-black bg-opacity-50 py-6 md:py-8 border-t border-gray-800">
     <div class="container mx-auto px-4 text-center">
-      <div class="text-gray-500 mb-4">
+      <div class="text-gray-500 mb-2 md:mb-4 text-sm md:text-base">
         © 2023 Marshad Ahamed. All rights reserved.
       </div>
-      <div class="text-gray-600 text-sm">
+      <div class="text-gray-600 text-xs md:text-sm">
         Crafted with <i class="fas fa-heart text-amber-500"></i> and <i class="fas fa-coffee text-purple-500"></i>
       </div>
     </div>
   </footer>
 
   <!-- Floating Controls -->
-  <div class="fixed bottom-8 right-8 z-50 flex flex-col space-y-4">
-    <button id="theme-toggle" class="floating-control w-14 h-14 rounded-full flex items-center justify-center text-white text-xl hover:scale-110 hover:shadow-xl transition-all duration-300">
+  <div class="fixed bottom-6 right-6 md:bottom-8 md:right-8 z-50 flex flex-col space-y-3 md:space-y-4">
+    <button id="theme-toggle" class="floating-control w-12 h-12 md:w-14 md:h-14 rounded-full flex items-center justify-center text-white text-lg md:text-xl hover:scale-110 hover:shadow-xl transition-all duration-300" title="Change Theme">
       <i class="fas fa-palette"></i>
     </button>
-    <button id="effect-toggle" class="floating-control w-14 h-14 rounded-full flex items-center justify-center text-white text-xl hover:scale-110 hover:shadow-xl transition-all duration-300">
+    <button id="effect-toggle" class="floating-control w-12 h-12 md:w-14 md:h-14 rounded-full flex items-center justify-center text-white text-lg md:text-xl hover:scale-110 hover:shadow-xl transition-all duration-300" title="Toggle Effects">
       <i class="fas fa-magic"></i>
     </button>
-    <a href="#" class="floating-control w-14 h-14 rounded-full flex items-center justify-center text-white text-xl hover:scale-110 hover:shadow-xl transition-all duration-300">
+    <a href="#" class="floating-control w-12 h-12 md:w-14 md:h-14 rounded-full flex items-center justify-center text-white text-lg md:text-xl hover:scale-110 hover:shadow-xl transition-all duration-300" title="Back to Top">
       <i class="fas fa-arrow-up"></i>
     </a>
   </div>
@@ -462,13 +534,21 @@
     function initThreeJS() {
       const container = document.getElementById('threejs-container');
       const scene = new THREE.Scene();
-      const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+      
+      // Adjust camera FOV based on screen size
+      const camera = new THREE.PerspectiveCamera(
+        75, 
+        window.innerWidth / window.innerHeight, 
+        0.1, 
+        1000
+      );
+      
       const renderer = new THREE.WebGLRenderer({ 
         antialias: true,
         alpha: true
       });
       
-      renderer.setPixelRatio(window.devicePixelRatio);
+      renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2)); // Limit pixel ratio for performance
       renderer.setSize(window.innerWidth, window.innerHeight);
       container.appendChild(renderer.domElement);
       
@@ -481,23 +561,29 @@
         { type: 'torus', color: 0x9575CD } // Light Purple
       ];
       
-      // Create 50 shapes in a spherical formation
-      for (let i = 0; i < 50; i++) {
+      // Adjust number of shapes based on screen size
+      const shapeCount = window.innerWidth < 768 ? 20 : 50;
+      
+      // Create shapes in a spherical formation
+      for (let i = 0; i < shapeCount; i++) {
         const type = geometryTypes[Math.floor(Math.random() * geometryTypes.length)];
         let geometry;
         
+        // Adjust size based on screen size
+        const sizeScale = window.innerWidth < 768 ? 0.7 : 1;
+        
         switch(type.type) {
           case 'box':
-            geometry = new THREE.BoxGeometry(3, 3, 3);
+            geometry = new THREE.BoxGeometry(3 * sizeScale, 3 * sizeScale, 3 * sizeScale);
             break;
           case 'sphere':
-            geometry = new THREE.SphereGeometry(2, 32, 32);
+            geometry = new THREE.SphereGeometry(2 * sizeScale, window.innerWidth < 768 ? 16 : 32, window.innerWidth < 768 ? 16 : 32);
             break;
           case 'cone':
-            geometry = new THREE.ConeGeometry(2, 4, 32);
+            geometry = new THREE.ConeGeometry(2 * sizeScale, 4 * sizeScale, window.innerWidth < 768 ? 16 : 32);
             break;
           case 'torus':
-            geometry = new THREE.TorusGeometry(2, 0.5, 16, 32);
+            geometry = new THREE.TorusGeometry(2 * sizeScale, 0.5 * sizeScale, window.innerWidth < 768 ? 8 : 16, window.innerWidth < 768 ? 16 : 32);
             break;
         }
         
@@ -565,17 +651,20 @@
       // Add subtle fog
       scene.fog = new THREE.FogExp2(0x000000, 0.001);
       
-      camera.position.z = 150;
+      // Adjust camera position based on screen size
+      camera.position.z = window.innerWidth < 768 ? 120 : 150;
       
       // Mouse interaction
       const mouse = new THREE.Vector2();
       const target = new THREE.Vector2();
       const windowHalf = new THREE.Vector2(window.innerWidth / 2, window.innerHeight / 2);
       
-      document.addEventListener('mousemove', (e) => {
+      function onMouseMove(e) {
         mouse.x = (e.clientX - windowHalf.x) / windowHalf.x;
         mouse.y = (e.clientY - windowHalf.y) / windowHalf.y;
-      });
+      }
+      
+      document.addEventListener('mousemove', onMouseMove);
       
       // Animation loop
       function animate() {
@@ -612,25 +701,65 @@
       animate();
       
       // Handle window resize
-      window.addEventListener('resize', () => {
+      function onWindowResize() {
         camera.aspect = window.innerWidth / window.innerHeight;
         camera.updateProjectionMatrix();
         renderer.setSize(window.innerWidth, window.innerHeight);
-      });
+        
+        // Update window half for mouse calculations
+        windowHalf.set(window.innerWidth / 2, window.innerHeight / 2);
+      }
+      
+      window.addEventListener('resize', onWindowResize);
+      
+      // Cleanup function
+      return function cleanup() {
+        window.removeEventListener('resize', onWindowResize);
+        document.removeEventListener('mousemove', onMouseMove);
+        container.removeChild(renderer.domElement);
+      };
     }
     
     // Initialize Three.js
     document.addEventListener('DOMContentLoaded', () => {
-      initThreeJS();
+      let cleanupThreeJS = initThreeJS();
+      
+      // Mobile menu functionality
+      const mobileMenuButton = document.getElementById('mobile-menu-button');
+      const mobileMenuClose = document.getElementById('mobile-menu-close');
+      const mobileMenu = document.getElementById('mobile-menu');
+      
+      mobileMenuButton.addEventListener('click', () => {
+        mobileMenu.classList.add('open');
+        document.body.style.overflow = 'hidden';
+      });
+      
+      mobileMenuClose.addEventListener('click', () => {
+        mobileMenu.classList.remove('open');
+        document.body.style.overflow = '';
+      });
+      
+      // Close menu when clicking on a link
+      document.querySelectorAll('#mobile-menu a').forEach(link => {
+        link.addEventListener('click', () => {
+          mobileMenu.classList.remove('open');
+          document.body.style.overflow = '';
+        });
+      });
       
       // Smooth scrolling for navigation
       document.querySelectorAll('a[href^="#"]').forEach(anchor => {
         anchor.addEventListener('click', function (e) {
           e.preventDefault();
           
-          document.querySelector(this.getAttribute('href')).scrollIntoView({
-            behavior: 'smooth'
-          });
+          const targetId = this.getAttribute('href');
+          const targetElement = document.querySelector(targetId);
+          
+          if (targetElement) {
+            targetElement.scrollIntoView({
+              behavior: 'smooth'
+            });
+          }
         });
       });
       
@@ -648,8 +777,14 @@
       // Initial check
       animateProgressBars();
       
-      // Check on scroll
-      window.addEventListener('scroll', animateProgressBars);
+      // Check on scroll with throttle
+      let isScrolling;
+      window.addEventListener('scroll', () => {
+        window.clearTimeout(isScrolling);
+        isScrolling = setTimeout(() => {
+          animateProgressBars();
+        }, 50);
+      }, false);
       
       // Theme toggle
       const themeToggle = document.getElementById('theme-toggle');
@@ -663,7 +798,7 @@
       
       themeToggle.addEventListener('click', () => {
         themeIndex = (themeIndex + 1) % themes.length;
-        document.body.className = `font-sans ${themes[themeIndex].bg} min-h-screen ${themes[themeIndex].text}`;
+        document.body.className = `min-h-screen font-sans ${themes[themeIndex].bg} ${themes[themeIndex].text}`;
         themeToggle.title = `Theme: ${themes[themeIndex].name}`;
       });
       
@@ -676,6 +811,18 @@
         document.body.classList.toggle('effects-disabled', !effectsEnabled);
         effectToggle.innerHTML = effectsEnabled ? '<i class="fas fa-magic"></i>' : '<i class="fas fa-ban"></i>';
         effectToggle.title = effectsEnabled ? 'Disable Effects' : 'Enable Effects';
+        
+        // Reinitialize Three.js when effects are re-enabled
+        if (effectsEnabled && !document.getElementById('threejs-container').hasChildNodes()) {
+          cleanupThreeJS = initThreeJS();
+        } else if (!effectsEnabled) {
+          // Clean up Three.js when effects are disabled
+          const container = document.getElementById('threejs-container');
+          while (container.firstChild) {
+            container.removeChild(container.firstChild);
+          }
+          if (cleanupThreeJS) cleanupThreeJS();
+        }
       });
       
       // 3D hover effects for cards
@@ -705,18 +852,15 @@
       const profileImg = document.querySelector('.floating');
       if (profileImg) {
         setInterval(() => {
-          profileImg.style.transform = `translateY(${Math.sin(Date.now() / 1000) * 10}px) rotate(${Math.sin(Date.now() / 1200) * 5}deg)`;
+          if (effectsEnabled) {
+            profileImg.style.transform = `translateY(${Math.sin(Date.now() / 1000) * 10}px) rotate(${Math.sin(Date.now() / 1200) * 5}deg)`;
+          }
         }, 50);
       }
       
-      // Add pulse animation to CTA buttons on hover
-      document.querySelectorAll('a, button').forEach(btn => {
-        btn.addEventListener('mouseenter', () => {
-          btn.classList.add('animate-pulse');
-        });
-        btn.addEventListener('mouseleave', () => {
-          btn.classList.remove('animate-pulse');
-        });
+      // Cleanup on page unload
+      window.addEventListener('beforeunload', () => {
+        if (cleanupThreeJS) cleanupThreeJS();
       });
     });
   </script>
